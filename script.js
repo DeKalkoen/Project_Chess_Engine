@@ -1,8 +1,8 @@
-function initiate(){
+function initiate() {
 	if (window.addEventListener) {
 		window.addEventListener("load", autorun, false);
 	}
-	else if (window.attachEvent){
+	else if (window.attachEvent) {
 		window.attachEvent("onload", autorun);
 	}
 	else {
@@ -10,10 +10,24 @@ function initiate(){
 	}
 }
 
-function autorun(){
-	console.log("autorun finished.")
+function autorun() {
+	let chess = new Chess();
+
+	let position = chess.getCurrentBoard();
+	for (let i = 0; i < BOARD_SIZE; i++) {
+		for (let j = 0; j < BOARD_SIZE; j++) {
+			
+		}
+	}
+		
 }
 
+
+
+
+
+
+/*
 function setupLocalStorage(){
 	createLocalStorageItem("test",0);
 }
@@ -53,3 +67,4 @@ function reset(){
 	setupLocalStorage();
 	loadFromStorage();
 }
+*/

@@ -2,11 +2,101 @@
 <html>
 	<head>
 		<meta charset = "UTF-8">
-		<title>Phi's ChessGame </title>
+		<title>Phi & Pieter's ChessGame </title>
 		<script src="script.js"></script>
+		<script src="constants.js"></script>
+		<script src="board.js"></script>
+		<script src="chess.js"></script>
+		<script src="piece.js"></script>
+		<script src="move.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script>initiate()</script>
 	</head>
+
 	<body>
+		<div id="container">
+			<div id="board">
+				<div id="rank_8" class="rank">
+					<div id="a_8" class="light square"></div>
+					<div id="b_8" class="dark square"></div>
+					<div id="c_8" class="light square"></div>
+					<div id="d_8" class="dark square"></div>
+					<div id="e_8" class="light square"></div>
+					<div id="f_8" class="dark square"></div>
+					<div id="g_8" class="light square"></div>
+					<div id="h_8" class="dark square"></div>
+				</div>
+				<div id="rank_7" class="rank">
+					<div id="a_7" class="dark square"></div>
+					<div id="b_7" class="light square"></div>
+					<div id="c_7" class="dark square"></div>
+					<div id="d_7" class="light square"></div>
+					<div id="e_7" class="dark square"></div>
+					<div id="f_7" class="light square"></div>
+					<div id="g_7" class="dark square"></div>
+					<div id="h_7" class="light square"></div>
+				</div>
+				<div id="rank_6" class="rank">
+					<div id="a_6" class="light square"></div>
+					<div id="b_6" class="dark square"></div>
+					<div id="c_6" class="light square"></div>
+					<div id="d_6" class="dark square"></div>
+					<div id="e_6" class="light square"></div>
+					<div id="f_6" class="dark square"></div>
+					<div id="g_6" class="light square"></div>
+					<div id="h_6" class="dark square"></div>
+				</div>
+				<div id="rank_5" class="rank">
+					<div id="a_5" class="dark square"></div>
+					<div id="b_5" class="light square"></div>
+					<div id="c_5" class="dark square"></div>
+					<div id="d_5" class="light square"></div>
+					<div id="e_5" class="dark square"></div>
+					<div id="f_5" class="light square"></div>
+					<div id="g_5" class="dark square"></div>
+					<div id="h_5" class="light square"></div>
+				</div>
+				<div id="rank_4" class="rank">
+					<div id="a_4" class="light square"></div>
+					<div id="b_4" class="dark square"></div>
+					<div id="c_4" class="light square"></div>
+					<div id="d_4" class="dark square"></div>
+					<div id="e_4" class="light square"></div>
+					<div id="f_4" class="dark square"></div>
+					<div id="g_4" class="light square"></div>
+					<div id="h_4" class="dark square"></div>
+				</div>
+				<div id="rank_3" class="rank">
+					<div id="a_3" class="dark square"></div>
+					<div id="b_3" class="light square"></div>
+					<div id="c_3" class="dark square"></div>
+					<div id="d_3" class="light square"></div>
+					<div id="e_3" class="dark square"></div>
+					<div id="f_3" class="light square"></div>
+					<div id="g_3" class="dark square"></div>
+					<div id="h_3" class="light square"></div>
+				</div>
+				<div id="rank_2" class="rank">
+					<div id="a_2" class="light square"></div>
+					<div id="b_2" class="dark square"></div>
+					<div id="c_2" class="light square"></div>
+					<div id="d_2" class="dark square"></div>
+					<div id="e_2" class="light square"></div>
+					<div id="f_2" class="dark square"></div>
+					<div id="g_2" class="light square"></div>
+					<div id="h_2" class="dark square"></div>
+				</div>
+				<div id="rank_1" class="rank">
+					<div id="a_1" class="dark square"></div>
+					<div id="b_1" class="light square"></div>
+					<div id="c_1" class="dark square"></div>
+					<div id="d_1" class="light square"></div>
+					<div id="e_1" class="dark square"></div>
+					<div id="f_1" class="light square"></div>
+					<div id="g_1" class="dark square"></div>
+					<div id="h_1" class="light square"></div>
+				</div>
+			</div>
+		</div>
 	</body>	
 </html>
