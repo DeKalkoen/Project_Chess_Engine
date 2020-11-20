@@ -13,10 +13,10 @@ function initiate() {
 function autorun() {
 	let chess = new Chess();
 
-	let position = chess.getCurrentBoard();
+	let position = chess.getCurrentBoard().squares;
 	for (let i = 0; i < BOARD_SIZE; i++) {
 		for (let j = 0; j < BOARD_SIZE; j++) {
-			
+
 		}
 	}
 		

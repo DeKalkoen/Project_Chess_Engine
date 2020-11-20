@@ -1,6 +1,6 @@
 class Move {
-    fromX
-    fromY
-    toX
-    toY
+    fromX = INVALID;
+    fromY = INVALID;
+    toX = INVALID;
+    toY = INVALID;
 }

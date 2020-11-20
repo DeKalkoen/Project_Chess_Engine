@@ -1,12 +1,10 @@
-const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
 class Chess {
     positions = [] // Array of boards
     moves = [] // Array of moves played
     winner = undefined // Winner
     
     constructor(fen) {
-        let error = undefinedl
+        let error = undefined;
         if (!fen)
             error = this.loadFEN(DEFAULT_FEN);
         else
@@ -32,49 +30,94 @@ class Chess {
         if(!validFEN(fen)){
             return error;
         }
+
+        this.positions.push(new Board(fen))
+        return SUCCESS;
     }
 
     validFEN(fen){
         var fields = fen.split(/\s+/)
+        var positions = fields[0].split('/')
         // FEN consists of 6 fields
         if (fields.length !== 6){
             console.log("FEN Must have 6 fields.")
             return false;
         }
-        // 4th field must be an integer > 0
+        //first field (positions field) must be 8 ranks long.
+        if (positions.length !== 8) {
+            console.log("Positions field (seperated by '/' must be of length 8.")
+            return false;
+        }
+        //second field (move field) must be w or b
+        if (!/^(w|b)$/.test(fields[1])) {
+            console.log ("move field must be 'w' or 'b'")
+            return false;
+        }
+        //third field (castling field) must be - or K/Q/k/q or any combination
+        if (!/^(KQ?k?q?|Qk?q?|kq?|q|-)$/.test(fields[2])) {
+            console.log("Castling field must be either - or a combination of K Q q k.")
+            return false;
+        }
+        //fourth field (en passant) may be - or any coordinate
+        if (!/^(-|[abcdefgh][36])$/.test(fields[3])) {
+            console.log("En pessant field must be either - or a coordinate.")
+            return false;
+        }
+        //en passant for the right turn?
+        if ((fields[3][1] == '3' && fields[1] == 'w') || (fields[3][1] == '6' && fields[1] == 'b')) {
+            console.log("En pessant field does not match the current turn")
+            return false;
+        }
+        //fifth field (halfmove field) must be an integer > 0
         if (isNaN(fields[4]) || 0 > parseInt(fields[5], 10)) {
             console.log("Halfmove number must be an integer that is > 0.")
             return false;
           }
       
-        // 5th field must be an integer > 0
+        //sixth field (fullmove field) must be an integer > 0
         if (isNaN(fields[5]) || 0 > parseInt(fields[4], 10)) {
             console.log("Move number must be an integer that is > 0.")
             return false;
         }
-      
-        //en passant may be - or any coordinate
-        if (!/^(-|[abcdefgh][36])$/.test(tokens[3])) {
-            console.log("En pessant field must be either - or a coordinate.")
-            return false;
+
+        //positions are valid
+        for (var i = 0; i < positions.length; i++) {
+            /* check for right sum of fields AND not two numbers in succession */
+            var sumRank = 0
+            var prev_num = false
+            var whiteKing = false
+            var blackKing = false
+          
+            for (var j = 0; j < positions[i].length; j++) {
+                if (!isNaN(positions[i][j])) {
+                    if (prev_num) {
+                        console.log("FEN positions may not have 2 consecutive numbers")
+                        return false
+                    }
+                    sumRank += parseInt(positions[i][j], 10)
+                    prev_num = true
+                }
+                else {
+                    if (!/^[prnbqkPRNBQK]$/.test(positions[i][j])) {
+                        console.log("FEN pieces must be represented using the letters prnbqk(or uppercase)")
+                        return false
+                    }
+                    if (positions[i][j] == 'k'){
+                        blackKing = true;
+                    }
+                    if(positions[i][j] == 'K'){
+                        whiteKing = true;
+                    }
+                    sumRank += 1
+                    prev_num = false
+                }
+            }
+        }
+        if (!(whiteKing && blackKing)){
+            console.log("FEN must contain both the white and the black king")
+            return false
         }
       
-          /* 5th criterion: 3th field is a valid castle-string? */
-          if (!/^(KQ?k?q?|Qk?q?|kq?|q|-)$/.test(tokens[2])) {
-            return { valid: false, error_number: 5, error: errors[5] }
-          }
-      
-          /* 6th criterion: 2nd field is "w" (white) or "b" (black)? */
-          if (!/^(w|b)$/.test(tokens[1])) {
-            return { valid: false, error_number: 6, error: errors[6] }
-          }
-      
-          /* 7th criterion: 1st field contains 8 rows? */
-          var rows = tokens[0].split('/')
-          if (rows.length !== 8) {
-            return { valid: false, error_number: 7, error: errors[7] }
-          }
-
     }
     // Clock
 }
