@@ -31,7 +31,6 @@ class Board {
         for (let i = 0; i < BOARD_SIZE; i ++){
             let board_j = 0;
             for(let j = 0; j < positions[i].length; j++){
-                console.log(i,j)
                 if (!isNaN(parseInt(positions[i][j]),10)){
                     board_j+= parseInt(positions[i][j],10);
                 }
