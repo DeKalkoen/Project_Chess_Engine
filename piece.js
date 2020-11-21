@@ -1,89 +1,74 @@
 class Piece {
-    color = 0;
-    type = 0;
+    type = INVALID;
+    color = INVALID;
+    
+    constructor (type, color, x, y) {
+        this.type = type;
+        this.color = color;
+        this.x = x;
+        this.y = y;
+    }
 
-    x = 0;
-    y = 0;
-    getLegalMoves(board) {
-
-    }
-}
-
-function pieceFromFEN(character){
-    let piece
-    let returnColor
-    if (!isNaN(parseInt(character),10)){
-        console.log("piecFromFEN only takes characters");
-        return 0;
-    }
-    if (character == character.toUpperCase()){
-        returnColor = WHITE;
-    }
-    else {
-        returnColor = BLACK;
-    }
-    character = character.toLowerCase();
-    if (character === 'k'){
-        piece = new King
-        piece.type = KING
-    }
-    else if (character === 'q'){
-        piece = new Queen
-        piece.type = QUEEN
-    }
-    else if (character === 'r'){
-        piece = new Rook
-        piece.type = ROOK
-    }
-    else if (character === 'n'){
-        piece = new Knight
-        piece.type = KNIGHT
-    }
-    else if (character === 'b'){
-        piece = new Bishop
-        piece.type = BISHOP
-
-    }
-    else if (character == 'p'){
-        piece = new Pawn
-        piece.type = PAWN
-    }
-    piece.color = returnColor;
-    return piece;
+    x = INVALID;
+    y = INVALID;
 }
 
 class King extends Piece {
+    constructor (type, color, x, y) {
+        super(type, color, x, y);
+    }
+    
     getLegalMoves(board) {
-        
+
     }
 }
 
 class Queen extends Piece {
+    constructor (type, color, x, y) {
+        super(type, color, x, y);
+    }
+
     getLegalMoves(board) {
 
     }
 }
 
 class Rook extends Piece {
+    constructor (type, color, x, y) {
+        super(type, color, x, y);
+    }
+    
     getLegalMoves(board) {
 
     }
 }
 
 class Bishop extends Piece {
+    constructor (type, color, x, y) {
+        super(type, color, x, y);
+    }
+    
     getLegalMoves(board) {
 
     }
 }
 
 class Knight extends Piece {
+    constructor (type, color, x, y) {
+        super(type, color, x, y);
+    }
+    
     getLegalMoves(board) {
 
     }
 }
 
 class Pawn extends Piece {
-    enPassant = 0;
+    enPassant = INVALID;
+    constructor (type, color, x, y) {
+        super(type, color, x, y);
+    }
+    
     getLegalMoves(board) {
 
     }

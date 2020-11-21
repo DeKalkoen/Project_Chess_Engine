@@ -1,13 +1,12 @@
 class Board {
     squares = Array.from(Array(8), () => new Array(8))
-    whitePieces = [16];
-    blackPieces = [16];
-    turn = WHITE;
-    castleRights = ""
-    enPassant = ""
-    halfMoves = 0
-    fullMoves = 0
-    // enPeasentSquare = 
+    whitePieces = [];
+    blackPieces = [];
+    turn = INVALID;
+    castleRights = "";
+    enPassant = "";
+    halfMoves = 0;
+    fullMoves = 0;
 
     constructor(fen) {
         this.loadFEN(fen);
@@ -28,22 +27,52 @@ class Board {
         this.enPassant = fields[3]
         this.halfMoves = fields [4]
         this.fullMoves = fields[5]
-        for (let i = 0; i < BOARD_SIZE; i ++){
+        for (let i = 0; i < BOARD_SIZE; i ++) {
             let board_j = 0;
-            for(let j = 0; j < positions[i].length; j++){
-                console.log(i,j)
-                if (!isNaN(parseInt(positions[i][j]),10)){
-                    board_j+= parseInt(positions[i][j],10);
+            for(let j = 0; j < positions[i].length; j++) {
+                let character = positions[i][j]
+                if (!isNaN(parseInt(character), 10)) {
+                    board_j += parseInt(character, 10);
+                    continue;
                 }
-                else{
-                    this.squares[7 - i][board_j] = pieceFromFEN(positions[i][j]);
-                    board_j++
+
+                let color = BLACK;
+                if (character == character.toUpperCase()) {
+                    color = WHITE;
                 }
-                
+                character = character.toLowerCase();
+
+                let piece = null;
+                if (character === 'k') {
+                    piece = new King(KING, color, board_j, 7 - i);
+                }
+                else if (character === 'q') {
+                    piece = new Queen(QUEEN, color, board_j, 7 - i);
+                }
+                else if (character === 'r') {
+                    piece = new Rook(ROOK, color, board_j, 7 - i);
+                }
+                else if (character === 'n') {
+                    piece = new Knight(KNIGHT, color, board_j, 7 - i);
+                }
+                else if (character === 'b') {
+                    piece = new Bishop(BISHOP, color, board_j, 7 - i);
+                }
+                else if (character == 'p') {
+                    piece = new Pawn(PAWN, color, board_j, 7 - i);
+                }
+
+                this.squares[7 - i][board_j] = piece;
+                if (color == WHITE) {
+                    this.whitePieces.push(piece);
+                }
+                else {
+                    this.blackPieces.push(piece);
+                }
+
+                board_j++;
             }
         }
-
-
     }
 
     loadBoard(board, move) {

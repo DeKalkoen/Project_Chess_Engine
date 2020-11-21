@@ -10,16 +10,51 @@ function initiate() {
 	}
 }
 
+function addPieceToHTML(piece) {
+	let content = "";
+	if (piece.type === KING) {
+		content = "K";
+	}
+	else if (piece.type === QUEEN) {
+		content = "Q";
+	}
+	else if (piece.type === ROOK) {
+		content = "R";
+	}
+	else if (piece.type === BISHOP) {
+		content = "B";
+	}
+	else if (piece.type === KNIGHT) {
+		content = "N";
+	}
+	else if (piece.type === PAWN) {
+		content = "P";
+	}
+
+	console.log('s' + piece.x + '_' + piece.y);
+
+	let square = document.getElementById('s' + piece.x + '_' + piece.y);
+	square.innerHTML = content;
+
+	if (piece.color == WHITE) {
+		square.className += " white";
+	}
+	else {
+		square.className += " black";
+	}
+}
+
 function autorun() {
 	let chess = new Chess();
 
-	let position = chess.getCurrentBoard().squares;
-	for (let i = 0; i < BOARD_SIZE; i++) {
-		for (let j = 0; j < BOARD_SIZE; j++) {
-
-		}
+	let board = chess.getCurrentBoard();
+	console.log(board);
+	for (let i = 0; i < board.whitePieces.length; i++) {
+		addPieceToHTML(board.whitePieces[i]);
 	}
-		
+	for (let i = 0; i < board.blackPieces.length; i++) {
+		addPieceToHTML(board.blackPieces[i]);
+	}
 }
 
 

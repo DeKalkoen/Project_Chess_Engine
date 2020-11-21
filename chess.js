@@ -21,15 +21,14 @@ class Chess {
     getCurrentBoard() {
         if (this.positions.length == 0) {
             console.log("No current position");
-            return;
+            return undefined;
         }
-        console.log (this.positions[this.positions.length - 1])
         return this.positions[this.positions.length - 1];
     }
 
     loadFEN(fen) {
-        if(!this.validFEN(fen)){
-            return 0;
+        if(!this.validFEN(fen)) {
+            return 0; //TODO return error and error checks
         }
         
         console.log("constructing board using " + fen)
@@ -38,8 +37,8 @@ class Chess {
     }
 
     validFEN(fen){
-        var fields = fen.split(/\s+/)
-        var positions = fields[0].split('/')
+        let fields = fen.split(/\s+/)
+        let positions = fields[0].split('/')
         // FEN consists of 6 fields
         if (fields.length !== 6){
             console.log("FEN Must have 6 fields.")
@@ -74,7 +73,7 @@ class Chess {
         if (isNaN(fields[4]) || 0 > parseInt(fields[5], 10)) {
             console.log("Halfmove number must be an integer that is > 0.")
             return false;
-          }
+        }
       
         //sixth field (fullmove field) must be an integer > 0
         if (isNaN(fields[5]) || 0 > parseInt(fields[4], 10)) {
@@ -82,16 +81,15 @@ class Chess {
             return false;
         }
 
-        var whiteKing = false
-        var blackKing = false
+        let whiteKing = false
+        let blackKing = false
         //positions are valid
-        for (var i = 0; i < positions.length; i++) {
+        for (let i = 0; i < positions.length; i++) {
             //sum ranks and no 2 consecutive numbers
-            var sumRank = 0
-            var prev_num = false
-            
+            let sumRank = 0
+            let prev_num = false
           
-            for (var j = 0; j < positions[i].length; j++) {
+            for (let j = 0; j < positions[i].length; j++) {
                 if (!isNaN(positions[i][j])) {
                     if (prev_num) {
                         console.log("FEN positions may not have 2 consecutive numbers")
@@ -105,12 +103,11 @@ class Chess {
                         console.log("FEN pieces must be represented using the letters prnbqk(or uppercase)")
                         return false
                     }
-                    if (positions[i][j] == 'k'){
+                    if (positions[i][j] == 'k') {
                         blackKing = true;
                     }
-                    if(positions[i][j] == 'K'){
+                    if (positions[i][j] == 'K') {
                         whiteKing = true;
-
                     }
                     sumRank += 1
                     prev_num = false
@@ -118,7 +115,7 @@ class Chess {
             }
         }
         //must have kings
-        if (!(whiteKing && blackKing)){
+        if (!(whiteKing && blackKing)) {
             console.log("FEN must contain both the white and the black king")
             return false
         }
