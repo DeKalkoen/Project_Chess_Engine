@@ -23,14 +23,16 @@ class Chess {
             console.log("No current position");
             return;
         }
+        console.log (this.positions[this.positions.length - 1])
         return this.positions[this.positions.length - 1];
     }
 
     loadFEN(fen) {
         if(!this.validFEN(fen)){
-            return error;
+            return 0;
         }
-
+        
+        console.log("constructing board using " + fen)
         this.positions.push(new Board(fen))
         return SUCCESS;
     }
@@ -120,6 +122,8 @@ class Chess {
             console.log("FEN must contain both the white and the black king")
             return false
         }
+        console.log("Valid fen!")
+        return true;
       
     }
     // Clock

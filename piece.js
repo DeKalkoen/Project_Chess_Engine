@@ -12,8 +12,9 @@ class Piece {
 function pieceFromFEN(character){
     let piece
     let returnColor
-    if (!isNaN(character * 1)){
+    if (!isNaN(parseInt(character),10)){
         console.log("piecFromFEN only takes characters");
+        return 0;
     }
     if (character == character.toUpperCase()){
         returnColor = WHITE;
