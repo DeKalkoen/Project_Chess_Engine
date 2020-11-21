@@ -27,7 +27,7 @@ class Chess {
     }
 
     loadFEN(fen) {
-        if(!validFEN(fen)){
+        if(!this.validFEN(fen)){
             return error;
         }
 
@@ -80,13 +80,14 @@ class Chess {
             return false;
         }
 
+        var whiteKing = false
+        var blackKing = false
         //positions are valid
         for (var i = 0; i < positions.length; i++) {
-            /* check for right sum of fields AND not two numbers in succession */
+            //sum ranks and no 2 consecutive numbers
             var sumRank = 0
             var prev_num = false
-            var whiteKing = false
-            var blackKing = false
+            
           
             for (var j = 0; j < positions[i].length; j++) {
                 if (!isNaN(positions[i][j])) {
@@ -107,12 +108,14 @@ class Chess {
                     }
                     if(positions[i][j] == 'K'){
                         whiteKing = true;
+
                     }
                     sumRank += 1
                     prev_num = false
                 }
             }
         }
+        //must have kings
         if (!(whiteKing && blackKing)){
             console.log("FEN must contain both the white and the black king")
             return false

@@ -9,6 +9,48 @@ class Piece {
     }
 }
 
+function pieceFromFEN(character){
+    let piece
+    let returnColor
+    if (!isNaN(character * 1)){
+        console.log("piecFromFEN only takes characters");
+    }
+    if (character == character.toUpperCase()){
+        returnColor = WHITE;
+    }
+    else {
+        returnColor = BLACK;
+    }
+    character = character.toLowerCase();
+    if (character === 'k'){
+        piece = new King
+        piece.type = KING
+    }
+    else if (character === 'q'){
+        piece = new Queen
+        piece.type = QUEEN
+    }
+    else if (character === 'r'){
+        piece = new Rook
+        piece.type = ROOK
+    }
+    else if (character === 'n'){
+        piece = new Knight
+        piece.type = KNIGHT
+    }
+    else if (character === 'b'){
+        piece = new Bishop
+        piece.type = BISHOP
+
+    }
+    else if (character == 'p'){
+        piece = new Pawn
+        piece.type = PAWN
+    }
+    piece.color = returnColor;
+    return piece;
+}
+
 class King extends Piece {
     getLegalMoves(board) {
         
