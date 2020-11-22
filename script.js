@@ -11,40 +11,61 @@ function initiate() {
 }
 
 function addPieceToHTML(piece) {
-	let content = "";
-	if (piece.type === KING) {
-		content = "K";
-	}
-	else if (piece.type === QUEEN) {
-		content = "Q";
-	}
-	else if (piece.type === ROOK) {
-		content = "R";
-	}
-	else if (piece.type === BISHOP) {
-		content = "B";
-	}
-	else if (piece.type === KNIGHT) {
-		content = "N";
-	}
-	else if (piece.type === PAWN) {
-		content = "P";
-	}
-
-	console.log('s' + piece.x + '_' + piece.y);
-
-	let square = document.getElementById('s' + piece.x + '_' + piece.y);
-	square.innerHTML = content;
+	let div = document.createElement("div");
 
 	if (piece.color == WHITE) {
-		square.className += " white";
+		div.className = "piece white";
 	}
 	else {
-		square.className += " black";
+		div.className = "piece black";
+	}
+	
+	if (piece.type === KING) {
+		div.className += "_king";
+	}
+	else if (piece.type === QUEEN) {
+		div.className += "_queen";
+	}
+	else if (piece.type === ROOK) {
+		div.className += "_rook";
+	}
+	else if (piece.type === BISHOP) {
+		div.className += "_bishop";
+	}
+	else if (piece.type === KNIGHT) {
+		div.className += "_knight";
+	}
+	else if (piece.type === PAWN) {
+		div.className += "_pawn";
+	}
+
+	let square = document.getElementById('s' + piece.x + '_' + piece.y);
+	square.appendChild(div);
+}
+
+function generateBoard() {
+	for (let i = 7; i >= 0; i--) {
+		let rank = document.createElement("div");
+		rank.className = "rank";
+		for (let j = 0; j < 8; j++) {
+			let square = document.createElement("div");
+			square.id = 's' + j + '_' + i;
+			square.className = "square ";
+			if ((i + j) % 2) {
+				square.className += "light";
+			}
+			else {
+				square.className += "dark";
+			}
+			rank.appendChild(square);
+		}
+		document.getElementById("board").appendChild(rank);
 	}
 }
 
 function autorun() {
+	generateBoard();
+
 	let chess = new Chess();
 
 	let board = chess.getCurrentBoard();
