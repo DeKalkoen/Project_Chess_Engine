@@ -13,50 +13,37 @@ class Piece {
     y = INVALID;
     getDiagonalMoves(board){
         let moves = []
-        let move = new Move(this.x,this,y)
-        let i = this.y
-        let j = this.x
         //bottomleft
         if (this.y > 0 && this.x > 0){
-            for (i,j; i > 0 && j > 0; i--,j--){
-                move.toX = j
-                move.toY = i
+            for (let i = this.y, j = this.x; i > 0 && j > 0; i--,j--){
+                let move = new Move(this.x,this,y, j, i)
                 if (board.isLegalMove(move)){
                     moves.push(move)
                 }
             }
         }
         //bottomright
-        i = this.y
-        j = this.x
         if (this.y < 7 && this.x > 0){
-            for(i,j; i > 0 && j < 8; i--,j++){
-                move.toX = j
-                move.toY = i
+            for(let i = this.y, j = this.x; i > 0 && j < 8; i--,j++){
+                let move = new Move(this.x,this,y, j, i)
                 if (board.isLegalMove(move)){
                     moves.push(move)
                 }
             }
         }
-        i = this.y
-        j = this.x
         //topright
         if (this.y < 7 && this.x < 7){
-            for(i,j; i < 8 && j < 8; i++,j++){
-                move.toX = j
-                move.toY = i
+            for(let i = this.y, j = this.x; i < 8 && j < 8; i++,j++){
+                let move = new Move(this.x,this,y, j, i)
                 if (board.isLegalMove(move)){
                     moves.push(move)
                 }
             }
         }
-        i = this.y
-        j = this.x
         //topleft
         if (this.y > 0 && this.x < 7){
-            for(i,j; i < 8 && j > 0; i++,j--){
-                move.toX = j
-                move.toY = i
+            for(let i = this.y, j = this.x; i < 8 && j > 0; i++,j--){
+                let move = new Move(this.x,this,y, j, i)
                 if (board.isLegalMove(move)){
                     moves.push(move)
                 }
@@ -66,9 +53,18 @@ class Piece {
     getStraightMoves(board){
         let moves = []
         let move = new Move(this.x,this,y)
-        //bottomleft
+        //downwards
         if (this.y > 0){
             for (let i = this.y; i > 0; i--){
+                let move = new Move(this.x,this,y, j, i)
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        } 
+        //upwards
+        if (this.y < 7){
+            for (let i = this.y; i < 8; i--){
                 move.toX = j
                 move.toY = i
                 if (board.isLegalMove(move)){
@@ -85,7 +81,6 @@ class King extends Piece {
     }
     getLegalMoves(board) {
         let moves = []
-        let kingMove = new Move(this.x, this,y)
         let castleKing
         let castleQueen
         if (this.type == WHITE) {
@@ -100,30 +95,31 @@ class King extends Piece {
         //todo, king may not be in check + castling squares may not be attacked! (rook may be attacked np)
         if (castleKing) {
             if (board.empty(this.x + 1, this.y) && board.empty(this.x + 2,this.y)) {
-                kingMove.toX = this.x + 2
-                kingMove.toY = this.y
+                console.log("castling Kingside added to Legal King moves")
+                let kingMove = new Move(this.x, this.y, this.x + 2, this.y)
                 moves.push(kingMove)
             }
         }
         if (castleQueen){
             if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {
-                kingMove.toX = this.x + 3
-                kingMove.toY = this.y
+                console.log("castling Queenside added to Legal King moves")
+                let kingMove = new Move(this.x, this.y, this.x + 3, this.y)
                 moves.push(kingMove)
             }
         }
-        let i = this.y + 1
-        let j = this.x - 1
-        let iLimit = i - 3;
-        let jLimit = j + 3;
-        i = i > 7 ? 7 : i
-        j = j < 0 ? 0 : j
+        let y_pos = this.y + 1
+        let x_pos = this.x - 1
+        let iLimit = y_pos - 3;
+        let jLimit = x_pos + 3;
+        y_pos = y_pos > 7 ? 7 : y_pos
+        x_pos = x_pos < 0 ? 0 : x_pos
         jLimit = jLimit > 8 ? 8 : jLimit
-        iLimit = jLimit < -1 ? -1 : jLimit
-        for(i; i > iLimit; i--){
-            for (j; j < jLimit; j++){
-                kingMove.toX = j
-                kingMove.toY = i
+        iLimit = iLimit < -1 ? -1 : iLimit
+        //console.log("y_pos: " + y_pos + " x_pos " + x_pos + " jlimit: " + jLimit + " iLimit: " + iLimit)
+        for(let i = y_pos; i > iLimit; i--){
+            for (let j = x_pos; j < jLimit; j++){
+                let kingMove = new Move(this.x, this.y, j, i)
+                //console.log("kingMove.fromX: " + kingMove.fromX + " kingMove.fromY: " + kingMove.fromY + " kingMove.toX: " + kingMove.toX + " kingMove.toY: " + kingMove.toY)
                 if (board.isLegalMove(kingMove)){
                     moves.push(kingMove)
                 }
