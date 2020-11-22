@@ -63,6 +63,20 @@ class Piece {
             }
         }
     }
+    getStraightMoves(board){
+        let moves = []
+        let move = new Move(this.x,this,y)
+        //bottomleft
+        if (this.y > 0){
+            for (let i = this.y; i > 0; i--){
+                move.toX = j
+                move.toY = i
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        } 
+    }
 }
 
 class King extends Piece {
