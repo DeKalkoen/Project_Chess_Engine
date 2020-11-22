@@ -4,6 +4,10 @@ class Board {
     blackPieces = [];
     turn = INVALID;
     castleRights = "";
+    whiteCastleKing;
+    whiteCastleQueen;
+    blackCastleKing;
+    blackCastleQueen;
     enPassant = "";
     halfMoves = 0;
     fullMoves = 0;
@@ -23,7 +27,22 @@ class Board {
         else {
             this.turn = BLACK;
         }
+        //use castleRights to construct FEN from board
         this.castleRights = fields[2]
+        if (fields[2].includes('k')){
+            this.blackCastleKing = true
+        }
+        if (fields[2].includes('q')){
+            this.blackCastleQueen = true
+        }
+        if (fields[2].includes('K')){
+            this.whiteCastleKing = true
+        }
+        if (fields[2].includes('Q')){
+            this.whiteCastleKing = true
+        }
+
+
         this.enPassant = fields[3]
         this.halfMoves = fields [4]
         this.fullMoves = fields[5]
@@ -61,8 +80,9 @@ class Board {
                 else if (character == 'p') {
                     piece = new Pawn(PAWN, color, board_j, 7 - i);
                 }
-
+                //place on board
                 this.squares[7 - i][board_j] = piece;
+
                 if (color == WHITE) {
                     this.whitePieces.push(piece);
                 }
@@ -86,6 +106,10 @@ class Board {
 
     getWhoseTurn() {
         return turn % 2;
+    }
+
+    empty(x,y){
+        return (this.squares[x][y] == null)
     }
 
     getLegalMoves() {
