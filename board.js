@@ -107,6 +107,9 @@ class Board {
     getWhoseTurn() {
         return turn % 2;
     }
+    convertCoordinates(x,y){
+        return String.fromCharCode(x + 97) + String.fromCharCode(y + 49);
+    }
 
     empty(x,y){
         return (this.squares[y][x] == null)
