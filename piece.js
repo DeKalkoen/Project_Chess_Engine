@@ -52,7 +52,6 @@ class Piece {
     }
     getStraightMoves(board){
         let moves = []
-        let move = new Move(this.x,this,y)
         //downwards
         if (this.y > 0){
             for (let i = this.y; i > 0; i--){
@@ -64,14 +63,32 @@ class Piece {
         } 
         //upwards
         if (this.y < 7){
-            for (let i = this.y; i < 8; i--){
-                move.toX = j
-                move.toY = i
+            for (let i = this.y; i < 8; i++){
+                let move = new Move(this.x,this,y, j, i)
                 if (board.isLegalMove(move)){
                     moves.push(move)
                 }
             }
         } 
+        //left
+        if (this.x > 0 ){
+            for(let i = this.x; i > 0; i--){
+                let move = new Move(this.x,this,y, j, i)
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                } 
+            }
+        }
+        //right
+        if(this.x < 7){
+            for (let i = this.x; i < 8; i++){
+                let move = new Move(this.x,this,y, j, i)
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                } 
+            }
+        }
+        return moves
     }
 }
 
@@ -137,7 +154,9 @@ class Queen extends Piece {
     }
 
     getLegalMoves(board) {
-
+        let straightMoves = this.getStraightMoves(board);
+        let diagonalMoves = this.getDiagonalMoves(board);
+        return straightMoves.concat(diagonalMoves)
     }
 }
 
@@ -147,7 +166,7 @@ class Rook extends Piece {
     }
     
     getLegalMoves(board) {
-
+        return this.getStraightMoves(board);
     }
 }
 
@@ -157,7 +176,7 @@ class Bishop extends Piece {
     }
     
     getLegalMoves(board) {
-
+        return this.getDiagonalMoves(board);
     }
 }
 
