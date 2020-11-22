@@ -3,4 +3,8 @@ class Move {
     fromY = INVALID;
     toX = INVALID;
     toY = INVALID;
+    constructor(fromX,fromY){
+        this.fromX = fromX
+        this.fromY = fromY
+    }
 }
