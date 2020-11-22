@@ -11,6 +11,58 @@ class Piece {
 
     x = INVALID;
     y = INVALID;
+    getDiagonalMoves(board){
+        let moves = []
+        let move = new Move(this.x,this,y)
+        let i = this.y
+        let j = this.x
+        //bottomleft
+        if (this.y > 0 && this.x > 0){
+            for (i,j; i > 0 && j > 0; i--,j--){
+                move.toX = j
+                move.toY = i
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        }
+        //bottomright
+        i = this.y
+        j = this.x
+        if (this.y < 7 && this.x > 0){
+            for(i,j; i > 0 && j < 8; i--,j++){
+                move.toX = j
+                move.toY = i
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        }
+        i = this.y
+        j = this.x
+        //topright
+        if (this.y < 7 && this.x < 7){
+            for(i,j; i < 8 && j < 8; i++,j++){
+                move.toX = j
+                move.toY = i
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        }
+        i = this.y
+        j = this.x
+        //topleft
+        if (this.y > 0 && this.x < 7){
+            for(i,j; i < 8 && j > 0; i++,j--){
+                move.toX = j
+                move.toY = i
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        }
+    }
 }
 
 class King extends Piece {
@@ -19,10 +71,7 @@ class King extends Piece {
     }
     getLegalMoves(board) {
         let moves = []
-        let kingMove = new Move 
-        kingMove.fromX = this.x
-        kingMove.fromY = this.y
-        
+        let kingMove = new Move(this.x, this,y)
         let castleKing
         let castleQueen
         if (this.type == WHITE) {
@@ -34,13 +83,15 @@ class King extends Piece {
             castleQueen = board.blackCastleQueen
         }
         //castling
-        if (castleKing || castleQueen) {
-            //todo, king may not be in check + castling squares may not be attacked! (rook may be attacked np)
+        //todo, king may not be in check + castling squares may not be attacked! (rook may be attacked np)
+        if (castleKing) {
             if (board.empty(this.x + 1, this.y) && board.empty(this.x + 2,this.y)) {
                 kingMove.toX = this.x + 2
                 kingMove.toY = this.y
                 moves.push(kingMove)
             }
+        }
+        if (castleQueen){
             if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {
                 kingMove.toX = this.x + 3
                 kingMove.toY = this.y
@@ -57,18 +108,11 @@ class King extends Piece {
         iLimit = jLimit < -1 ? -1 : jLimit
         for(i; i > iLimit; i--){
             for (j; j < jLimit; j++){
-                if (board.empty(j,i)){
-                    kingMove.toX = j
-                    kingMove.toY = i
+                kingMove.toX = j
+                kingMove.toY = i
+                if (board.isLegalMove(kingMove)){
                     moves.push(kingMove)
                 }
-                //todo cant capture if piece is defended (!empty so .type works)
-                else if (!(board[j][i].type == this.type)){
-                    kingMove.toX = j
-                    kingMove.toY = i
-                    moves.push(kingMove)
-                }
-
             }
         }
         return moves

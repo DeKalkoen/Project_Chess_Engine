@@ -111,6 +111,17 @@ class Board {
     empty(x,y){
         return (this.squares[x][y] == null)
     }
+    isLegalMove(move){
+        //todo check if king not in check after move
+        if (this.empty(move.toX,move.toY)){
+            return true;
+        }
+        //capture
+        else if (!(this.squares[move.fromX][move.fromY].color == this.squares[move.toX][move.toY].color)){
+            return true;
+        }
+        return false;
+    }
 
     getLegalMoves() {
 
