@@ -1,6 +1,8 @@
 .piece {
-    width: 113px;
-    height: 113px;
+    width: 12vh;
+    height: 12vh;
+
+    background-size: cover;
 }
 
 .white_pawn {

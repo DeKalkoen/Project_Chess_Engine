@@ -1,22 +1,19 @@
 #board {
-    width: 904px;
-    height: 904px;
+    width: 96vh;
+    height: 96vh;
     margin: auto;
 }
 
 .rank {
-    width: 904px;
-    height: 113px;
+    width: 96vh;
 }
 
 .square {
-    width: 113px;
-    height: 113px;
+    width: 12vh;
+    height: 12vh;
 
     float: left;
-    font-size: 90px;
-    font-family: monospace;
-    text-align: center;
+    background-size: cover;
 }
 
 .light {

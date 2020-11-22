@@ -44,10 +44,10 @@ function addPieceToHTML(piece) {
 }
 
 function generateBoard() {
-	for (let i = 7; i >= 0; i--) {
+	for (let i = BOARD_SIZE - 1; i >= 0; i--) {
 		let rank = document.createElement("div");
 		rank.className = "rank";
-		for (let j = 0; j < 8; j++) {
+		for (let j = 0; j < BOARD_SIZE; j++) {
 			let square = document.createElement("div");
 			square.id = 's' + j + '_' + i;
 			square.className = "square ";
@@ -63,12 +63,7 @@ function generateBoard() {
 	}
 }
 
-function autorun() {
-	generateBoard();
-
-	let chess = new Chess();
-
-	let board = chess.getCurrentBoard();
+function placePieces(board) {
 	console.log(board);
 	for (let i = 0; i < board.whitePieces.length; i++) {
 		addPieceToHTML(board.whitePieces[i]);
@@ -76,6 +71,12 @@ function autorun() {
 	for (let i = 0; i < board.blackPieces.length; i++) {
 		addPieceToHTML(board.blackPieces[i]);
 	}
+}
+
+function autorun() {
+	generateBoard();
+	let chess = new Chess();
+	placePieces(chess.getCurrentBoard());
 }
 
 
