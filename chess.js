@@ -25,6 +25,24 @@ class Chess {
         }
         return this.positions[this.positions.length - 1];
     }
+    makeMove(move){
+
+    }
+    getLegalMoves(){
+        let legalMoves= [];
+        let current = this.getCurrentBoard()
+        if (current.turn == WHITE){
+            for (let i = 0 ; i < current.whitePieces.length; i++){
+                legalMoves = legalMoves.concat(current.whitePieces[i].getLegalMoves(current))
+            }
+        }
+        else {
+            for (let i = 0 ; i < current.blackPieces.length; i++){
+                legalMoves = legalMoves.concat(current.blackPieces[i].getLegalMoves(current))
+            }
+        }
+        return legalMoves
+    }
 
     loadFEN(fen) {
         if(!this.validFEN(fen)) {
