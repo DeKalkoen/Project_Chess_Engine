@@ -116,6 +116,18 @@ class Board {
     }
     isLegalMove(move){
         //todo check if king not in check after move
+        //move is in board && is number
+        let coords = [move.fromX, move.fromY, move.toX, move.toY]
+        for (i in coords){
+            if (!isNaN(i)){
+                console.log("isLegalMoves only takes numbers!")
+                return false   
+            }
+            if (i > 7 || i < 0){
+                console.log("isLegalMoves only takes numbers!")
+                return false
+            }
+        }
         if (this.empty(move.toX,move.toY)){
             return true;
         }

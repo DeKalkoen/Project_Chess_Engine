@@ -110,16 +110,15 @@ class King extends Piece {
         }
         //castling
         //todo, king may not be in check + castling squares may not be attacked! (rook may be attacked np)
+        //todo, castling rights taken away when rook/king moves.
         if (castleKing) {
             if (board.empty(this.x + 1, this.y) && board.empty(this.x + 2,this.y)) {
-                console.log("castling Kingside added to Legal King moves")
                 let kingMove = new Move(this.x, this.y, this.x + 2, this.y)
                 moves.push(kingMove)
             }
         }
         if (castleQueen){
             if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {
-                console.log("castling Queenside added to Legal King moves")
                 let kingMove = new Move(this.x, this.y, this.x + 3, this.y)
                 moves.push(kingMove)
             }
@@ -186,7 +185,18 @@ class Knight extends Piece {
     }
     
     getLegalMoves(board) {
-
+        let moves = []
+        let y_coords = [-2, -1, 1, 2]
+        for (let i in y_coords){
+            let x_coords = (i % 2 == 0) ? [-1,1] : [-2,2]
+            for (let j in x_coords){
+                let move = new Move (this.x, this.y, this.x + j, this.y + i)
+                if (board.isLegalMove(move)){
+                    moves.push(move)
+                }
+            }
+        }
+        return moves   
     }
 }
 
@@ -197,6 +207,37 @@ class Pawn extends Piece {
     }
     
     getLegalMoves(board) {
-
+        let moves = []
+        let pawnToY
+        let pawnJumpY
+        //TODO en passant
+        if (this.color == BLACK){
+            if (this.y > 0){
+                pawnToY = this.y - 1
+            }
+            //first move of black pawn
+            if(this.y == 6){
+                pawnJumpY = this.y - 2
+            }
+            
+        }
+        else if (this.color == WHITE){
+            if (this.y < 7){
+                pawnToY = this.y + 1
+            }
+            //first move of white pawn
+            if(this.y == 1){
+                pawnJumpY = this.y + 2
+            }
+        }
+        let move = new Move (this.x, this.y, this.x, pawnToY)
+        if (board.isLegalMove(move)){
+            moves.push(move);
+            let moveJump = new Move (this.x,this,y,this.x,pawnJumpY) 
+            if (board.isLegalMove(moveJump)){
+                moves.push(moveJump)
+            }
+        }
+        return moves
     }
 }
