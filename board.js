@@ -154,10 +154,10 @@ class Board {
     }
     getPieceIndex(x,y,color){
         //slow -> pieces copies array(?)
-        let pieces = (color == WHITE) ? whitePieces : blackPieces
-        for (let i = 0; i < this.pieces.length; i++){
-            if (this.pieces[i].x == x){
-                if (this.pieces[i].y == y){
+        let pieces = (color == WHITE) ? this.whitePieces : this.blackPieces
+        for (let i = 0; i < pieces.length; i++){
+            if (pieces[i].x == x){
+                if (pieces[i].y == y){
                     return i
                 }
             }

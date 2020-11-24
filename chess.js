@@ -29,35 +29,12 @@ class Chess {
     makeMoveOnCurrent(move){
         let nextBoard = this.getCurrentBoard()
         currentTurn = nextBoard.getWhoseTurn()
-        nextBoard.turn = (currentTurn + 1) % 2
+        nextBoard.turn = 1 - currentTurn
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : halfmoves + 1
         let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
 
         if (pieceIndex < 0){
             console.log("Piece with color: " +  currentTurn + " not found in respective pieces array")
-            return false
-        }
-        let legal = false;
-        if (currentTurn == BLACK){
-            let legalMoves = nextBoard.blackPieces[pieceIndex].getLegalMoves(nextBoard)
-            for (i in legalMoves){
-                if (move === i){
-                    legal = true
-                }
-            }
-            
-        }
-        else {
-            let legalMoves = nextBoard.blackPieces[pieceIndex].getLegalMoves(nextBoard)
-            for (i in legalMoves){
-                if (move === i){
-                    legal = true
-                }
-            }
-        }
-        if (!legal){
-            console.log("Move made was nog legal")
-            return false;
         }
         //captured xy first then update the capturing xy
         if(move.isCapture){
@@ -101,7 +78,6 @@ class Chess {
         nextBoard.updateCastlingRights(move)
         this.positions.push(nextBoard)
         this.moves.push(moves)
-        return true
     }
     getLegalMoves(){
         let legalMoves= []
