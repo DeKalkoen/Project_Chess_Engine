@@ -12,6 +12,9 @@ class Piece {
     x = INVALID;
     y = INVALID;
     getDiagonalMoves(board){
+        if (!(board.getWhoseTurn() == this.color)){
+            return null
+        }
         let moves = []
         //bottomleft
         if (this.y > 0 && this.x > 0){
@@ -88,6 +91,9 @@ class Piece {
         return moves
     }
     getStraightMoves(board){
+        if (!(board.getWhoseTurn() == this.color)){
+            return null
+        }
         let moves = []
         //downwards
         if (this.y > 0){
@@ -150,6 +156,9 @@ class King extends Piece {
         super(type, color, x, y);
     }
     getLegalMoves(board) {
+        if (!(board.getWhoseTurn() == this.color)){
+            return null
+        }
         let moves = []
         let castleKing
         let castleQueen
@@ -172,12 +181,9 @@ class King extends Piece {
             }
         }
         if (castleQueen){
-            console.log("castleQueen")
-            if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {
-                console.log("castleQueen1")
+            if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {     
                 let kingMove = new Move(this.x, this.y, this.x - 2, this.y)
                 if (board.isLegalMove_specify(kingMove)){
-                    console.log("castleQueen2")
                     moves.push(kingMove)
                 }
             }
@@ -240,6 +246,9 @@ class Knight extends Piece {
     }
     
     getLegalMoves(board) {
+        if (!(board.getWhoseTurn() == this.color)){
+            return null
+        }
         let moves = []
         let y_coords = [-2, -1, 1, 2]
         for (let i = 0; i < y_coords.length; i++){
@@ -256,12 +265,14 @@ class Knight extends Piece {
 }
 
 class Pawn extends Piece {
-    enPassant = INVALID;
     constructor (type, color, x, y) {
         super(type, color, x, y);
     }
     
     getLegalMoves(board) {
+        if (!(board.getWhoseTurn() == this.color)){
+            return null
+        }
         let moves = []
         let pawnToY
         let pawnJumpY
