@@ -105,7 +105,7 @@ class Board {
     }
 
     getWhoseTurn() {
-        return turn % 2;
+        return this.turn % 2;
     }
     convertCoordinates(x,y){
         return String.fromCharCode(x + 97) + String.fromCharCode(y + 49);
@@ -115,7 +115,6 @@ class Board {
     }
 
     empty(x,y){
-        console.log(this.convertCoordinates(x,y))
         return (this.squares[y][x] == null)
     }
     isLegalMove_specify(move){

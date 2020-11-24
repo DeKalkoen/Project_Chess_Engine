@@ -216,7 +216,13 @@ class Queen extends Piece {
     getLegalMoves(board) {
         let straightMoves = this.getStraightMoves(board);
         let diagonalMoves = this.getDiagonalMoves(board);
-        return straightMoves.concat(diagonalMoves)
+        if (straightMoves && diagonalMoves){
+            return straightMoves.concat(diagonalMoves)
+        }
+        else{
+            return []
+        }
+        
     }
 }
 
@@ -297,6 +303,24 @@ class Pawn extends Piece {
             if(this.y == 1){
                 pawnJumpY = this.y + 2
                 moveJump = new Move (this.x,this.y,this.x,pawnJumpY) 
+            }
+        }
+        if ((this.color == BLACK && this.y > 0)||(this.color == WHITE && this.y < 7)){
+            if (this.x > 0){
+                if (!board.empty(this.x - 1, pawnToY)){
+                    let move = new Move(this.x, this.y, this.x - 1, pawnToY)
+                    if (board.isLegalMove_specify(move)){
+                        moves.push(move)
+                    }
+                }
+            }
+            if (this.x < 7){
+                if (!board.empty(this.x + 1, pawnToY)){
+                    let move = new Move(this.x, this.y, this.x + 1, pawnToY)
+                    if (board.isLegalMove_specify(move)){
+                        moves.push(move)
+                    }
+                }
             }
         }
         let move = new Move (this.x, this.y, this.x, pawnToY)
