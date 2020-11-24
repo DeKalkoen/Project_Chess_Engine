@@ -39,7 +39,7 @@ class Board {
             this.whiteCastleKing = true
         }
         if (fields[2].includes('Q')){
-            this.whiteCastleKing = true
+            this.whiteCastleQueen = true
         }
 
 
@@ -115,13 +115,14 @@ class Board {
     }
 
     empty(x,y){
+        console.log("x: " + x + " y: " + y)
         return (this.squares[y][x] == null)
     }
     isLegalMove_specify(move){
         //todo check if king not in check after move
         let coords = [move.fromX, move.fromY, move.toX, move.toY]
         for (let i in coords){
-            if (!isNaN(i)){
+            if (isNaN(i)){                
                 console.log("isLegalMove_specify only takes numbers!")
                 return false   
             }
@@ -138,7 +139,7 @@ class Board {
             move.isCastle = ((move.fromX - move.toX) % 2 == 0) ? true : false 
         } 
         //todo en passant captures in front
-        if (this.empty(move.toX,move.toY)){
+        if (this.empty(move.toX, move.toY)){
             move.isCapture = false
             return true;
         }

@@ -16,7 +16,7 @@ class Piece {
         //bottomleft
         if (this.y > 0 && this.x > 0){
             for (let i = this.y, j = this.x; i > 0 && j > 0; i--,j--){
-                let move = new Move(this.x,this,y, j, i)
+                let move = new Move(this.x,this.y, j, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
@@ -25,7 +25,7 @@ class Piece {
         //bottomright
         if (this.y < 7 && this.x > 0){
             for(let i = this.y, j = this.x; i > 0 && j < 8; i--,j++){
-                let move = new Move(this.x,this,y, j, i)
+                let move = new Move(this.x,this.y, j, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
@@ -34,7 +34,7 @@ class Piece {
         //topright
         if (this.y < 7 && this.x < 7){
             for(let i = this.y, j = this.x; i < 8 && j < 8; i++,j++){
-                let move = new Move(this.x,this,y, j, i)
+                let move = new Move(this.x,this.y, j, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
@@ -43,7 +43,7 @@ class Piece {
         //topleft
         if (this.y > 0 && this.x < 7){
             for(let i = this.y, j = this.x; i < 8 && j > 0; i++,j--){
-                let move = new Move(this.x,this,y, j, i)
+                let move = new Move(this.x,this.y, j, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
@@ -54,38 +54,50 @@ class Piece {
         let moves = []
         //downwards
         if (this.y > 0){
-            for (let i = this.y; i > 0; i--){
-                let move = new Move(this.x,this,y, j, i)
+            for (let i = this.y - 1; i > 0 ; i--){
+                let move = new Move(this.x,this.y, this.x, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
+                }
+                if(!(board.empty(this.x, i))){
+                    break
                 }
             }
         } 
         //upwards
         if (this.y < 7){
-            for (let i = this.y; i < 8; i++){
-                let move = new Move(this.x,this,y, j, i)
+            for (let i = this.y + 1; i < 8; i++){
+                let move = new Move(this.x,this.y, this.x, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
+                }
+                if(!(board.empty(this.x, i))){
+                    break
                 }
             }
         } 
         //left
         if (this.x > 0 ){
-            for(let i = this.x; i > 0; i--){
-                let move = new Move(this.x,this,y, j, i)
+            for(let i = this.x - 1; i > 0; i--){
+                let move = new Move(this.x,this.y, i, this.y)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
-                } 
+                }
+                if(!board.empty(i, this.y)){
+                    break
+                }
             }
         }
         //right
         if(this.x < 7){
-            for (let i = this.x; i < 8; i++){
-                let move = new Move(this.x,this,y, j, i)
+            for (let i = this.x + 1; i < 8; i++){
+                let move = new Move(this.x,this.y, i, this.y)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 } 
+                if(!board.empty(i, this.y)){
+                    break
+                }
             }
         }
         return moves
@@ -132,13 +144,13 @@ class King extends Piece {
         }
         let y_pos = this.y + 1
         let x_pos = this.x - 1
-        let iLimit = y_pos - 3;
-        let jLimit = x_pos + 3;
+        let iLimit = this.y - 1;
+        let jLimit = this.x + 1;
         y_pos = y_pos > 7 ? 7 : y_pos
         x_pos = x_pos < 0 ? 0 : x_pos
         jLimit = jLimit > 8 ? 8 : jLimit
         iLimit = iLimit < -1 ? -1 : iLimit
-        //console.log("y_pos: " + y_pos + " x_pos " + x_pos + " jlimit: " + jLimit + " iLimit: " + iLimit)
+        console.log("y_pos: " + y_pos + " x_pos " + x_pos + " jlimit: " + jLimit + " iLimit: " + iLimit)
         for(let i = y_pos; i > iLimit; i--){
             for (let j = x_pos; j < jLimit; j++){
                 let kingMove = new Move(this.x, this.y, j, i)
@@ -194,10 +206,10 @@ class Knight extends Piece {
     getLegalMoves(board) {
         let moves = []
         let y_coords = [-2, -1, 1, 2]
-        for (let i in y_coords){
-            let x_coords = (i % 2 == 0) ? [-1,1] : [-2,2]
-            for (let j in x_coords){
-                let move = new Move (this.x, this.y, this.x + j, this.y + i)
+        for (let i = 0; i < y_coords.length; i++){
+            let x_coords = (y_coords[i] % 2 == 0) ? [-1,1] : [-2,2]
+            for (let j = 0; j < x_coords.length; j++){
+                let move = new Move (this.x, this.y, this.x + x_coords[j], this.y + y_coords[i])
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
@@ -217,6 +229,7 @@ class Pawn extends Piece {
         let moves = []
         let pawnToY
         let pawnJumpY
+        let moveJump = -1;
         //TODO en passant
         if (this.color == BLACK){
             if (this.y > 0){
@@ -225,6 +238,7 @@ class Pawn extends Piece {
             //first move of black pawn
             if(this.y == 6){
                 pawnJumpY = this.y - 2
+                moveJump = new Move (this.x,this.y,this.x,pawnJumpY) 
             }
             
         }
@@ -235,14 +249,16 @@ class Pawn extends Piece {
             //first move of white pawn
             if(this.y == 1){
                 pawnJumpY = this.y + 2
+                moveJump = new Move (this.x,this.y,this.x,pawnJumpY) 
             }
         }
         let move = new Move (this.x, this.y, this.x, pawnToY)
         if (board.isLegalMove_specify(move)){
             moves.push(move);
-            let moveJump = new Move (this.x,this,y,this.x,pawnJumpY) 
-            if (board.isLegalMove_specify(moveJump)){
-                moves.push(moveJump)
+            if (!(moveJump === -1)){
+                if (board.isLegalMove_specify(moveJump)){
+                    moves.push(moveJump)
+                }
             }
         }
         return moves
