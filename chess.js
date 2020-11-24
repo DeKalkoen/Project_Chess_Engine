@@ -28,7 +28,8 @@ class Chess {
     }
     makeMoveOnCurrent(move){
         let nextBoard = this.getCurrentBoard()
-        currentTurn = nextBoard.getWhoseTurn()
+        let currentType = nextBoard.squares[move.fromY][move.fromX].type
+        let currentTurn = nextBoard.getWhoseTurn()
         nextBoard.turn = 1 - currentTurn
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : halfmoves + 1
         let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
@@ -75,7 +76,9 @@ class Chess {
                 }
             }
         }
-        nextBoard.updateCastlingRights(move)
+        if (currentType == KING || currentType == ROOK){
+            nextBoard.updateCastlingRights(move)
+        }
         this.positions.push(nextBoard)
         this.moves.push(moves)
     }
@@ -196,7 +199,6 @@ class Chess {
         }
         console.log("Valid fen!")
         return true;
-      
     }
     // Clock
 }
