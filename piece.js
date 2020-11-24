@@ -17,7 +17,7 @@ class Piece {
         if (this.y > 0 && this.x > 0){
             for (let i = this.y, j = this.x; i > 0 && j > 0; i--,j--){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -26,7 +26,7 @@ class Piece {
         if (this.y < 7 && this.x > 0){
             for(let i = this.y, j = this.x; i > 0 && j < 8; i--,j++){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -35,7 +35,7 @@ class Piece {
         if (this.y < 7 && this.x < 7){
             for(let i = this.y, j = this.x; i < 8 && j < 8; i++,j++){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -44,7 +44,7 @@ class Piece {
         if (this.y > 0 && this.x < 7){
             for(let i = this.y, j = this.x; i < 8 && j > 0; i++,j--){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -56,7 +56,7 @@ class Piece {
         if (this.y > 0){
             for (let i = this.y; i > 0; i--){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -65,7 +65,7 @@ class Piece {
         if (this.y < 7){
             for (let i = this.y; i < 8; i++){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -74,7 +74,7 @@ class Piece {
         if (this.x > 0 ){
             for(let i = this.x; i > 0; i--){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 } 
             }
@@ -83,7 +83,7 @@ class Piece {
         if(this.x < 7){
             for (let i = this.x; i < 8; i++){
                 let move = new Move(this.x,this,y, j, i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 } 
             }
@@ -117,13 +117,17 @@ class King extends Piece {
         if (castleKing) {
             if (board.empty(this.x + 1, this.y) && board.empty(this.x + 2,this.y)) {
                 let kingMove = new Move(this.x, this.y, this.x + 2, this.y)
-                moves.push(kingMove)
+                if (board.isLegalMove_specify(kingMove)){
+                    moves.push(kingMove)
+                }
             }
         }
         if (castleQueen){
             if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {
                 let kingMove = new Move(this.x, this.y, this.x + 3, this.y)
-                moves.push(kingMove)
+                if (board.isLegalMove_specify(kingMove)){
+                    moves.push(kingMove)
+                }
             }
         }
         let y_pos = this.y + 1
@@ -139,7 +143,7 @@ class King extends Piece {
             for (let j = x_pos; j < jLimit; j++){
                 let kingMove = new Move(this.x, this.y, j, i)
                 //console.log("kingMove.fromX: " + kingMove.fromX + " kingMove.fromY: " + kingMove.fromY + " kingMove.toX: " + kingMove.toX + " kingMove.toY: " + kingMove.toY)
-                if (board.isLegalMove(kingMove)){
+                if (board.isLegalMove_specify(kingMove)){
                     moves.push(kingMove)
                 }
             }
@@ -194,7 +198,7 @@ class Knight extends Piece {
             let x_coords = (i % 2 == 0) ? [-1,1] : [-2,2]
             for (let j in x_coords){
                 let move = new Move (this.x, this.y, this.x + j, this.y + i)
-                if (board.isLegalMove(move)){
+                if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
             }
@@ -234,10 +238,10 @@ class Pawn extends Piece {
             }
         }
         let move = new Move (this.x, this.y, this.x, pawnToY)
-        if (board.isLegalMove(move)){
+        if (board.isLegalMove_specify(move)){
             moves.push(move);
             let moveJump = new Move (this.x,this,y,this.x,pawnJumpY) 
-            if (board.isLegalMove(moveJump)){
+            if (board.isLegalMove_specify(moveJump)){
                 moves.push(moveJump)
             }
         }

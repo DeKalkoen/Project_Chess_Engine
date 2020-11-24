@@ -117,21 +117,12 @@ class Board {
     empty(x,y){
         return (this.squares[y][x] == null)
     }
-    isLegalMove(move){
+    isLegalMove_specify(move){
         //todo check if king not in check after move
-        //move is in board && is number
-        let fromType = this.squares[move.fromY][move.fromX].type
-        move.isPawnMove = ( fromType == PAWN) ? true : false
-        
-        if (fromType == KING){
-            //-2 % 2 == -0 == 0 == 2 % 2
-            move.isCastle = ((move.fromX - move.toX) % 2 == 0) ? true : false 
-        }
-        
         let coords = [move.fromX, move.fromY, move.toX, move.toY]
         for (i in coords){
             if (!isNaN(i)){
-                console.log("isLegalMoves only takes numbers!")
+                console.log("isLegalMove_specify only takes numbers!")
                 return false   
             }
             if (i > 7 || i < 0){
@@ -139,10 +130,16 @@ class Board {
                 return false
             }
         }
+        let fromType = this.squares[move.fromY][move.fromX].type
+        move.isPawnMove = ( fromType == PAWN) ? true : false
         
-         
+        if (fromType == KING){
+            //-2 % 2 == -0 == 0 == 2 % 2
+            move.isCastle = ((move.fromX - move.toX) % 2 == 0) ? true : false 
+        } 
         //todo en passant captures in front
         if (this.empty(move.toX,move.toY)){
+            move.isCapture = false
             return true;
         }
         //capture
@@ -157,10 +154,10 @@ class Board {
     }
     getPieceIndex(x,y,color){
         //slow -> pieces copies array(?)
-        let pieces = (color == WHITE) ? whitePieces : blackPieces
-        for (let i = 0; i < this.pieces.length; i++){
-            if (this.pieces[i].x == x){
-                if (this.pieces[i].y == y){
+        let pieces = (color == WHITE) ? this.whitePieces : this.blackPieces
+        for (let i = 0; i < pieces.length; i++){
+            if (pieces[i].x == x){
+                if (pieces[i].y == y){
                     return i
                 }
             }

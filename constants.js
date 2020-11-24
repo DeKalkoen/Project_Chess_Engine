@@ -10,7 +10,7 @@ const PAWN = 5;
 
 const BOARD_SIZE = 8;
 const INVALID = -1;
-
+const TEST_FEN = "r3k2r/pbpqbppp/1pnp4/3np3/2P5/1PNP1NP1/PB1QPPBP/R3K2R w KQkq - 0 1"
 const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 
