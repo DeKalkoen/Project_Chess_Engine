@@ -96,6 +96,13 @@ function showHighlights(moves) {
 function playMove(move, piece) {
 	console.log(move);
 	removeHighlights();
+	let square = document.getElementById("s" + move.toX + "_" + move.toY);
+	if (square.hasChildNodes()) {
+		if (!move.isCapture) {
+			console.log("BOARD AND API OUT OF SYNC!!!!! (captured piece)");
+		}
+		square.firstChild.remove();
+	}
 	document.getElementById("s" + move.toX + "_" + move.toY).appendChild(piece);
 }
 
