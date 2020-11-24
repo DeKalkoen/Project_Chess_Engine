@@ -38,13 +38,26 @@ function getHoveredSquare(mouseX, mouseY) {
 function removeHighlights() {
 	console.log("remove called");
 	document.querySelectorAll(".highlighted").forEach((div) => {
-		div.parentNode.innerHTML = div.innerHTML;
+		if (div.hasChildNodes()) {
+			let piece = div.firstChild;
+			let square = div.parentNode;
+			div.remove();
+			square.appendChild(piece);
+		}
+		else {
+			div.remove();
+		}
 	});
 }
 
 function addHighlight(square, type) {
 	let div = document.getElementById(square);
-	div.innerHTML = `<div class="highlighted ${type}">` + div.innerHTML + "</div>";
+	let highlight = document.createElement("div");
+	highlight.className = "highlighted " + type;
+	if (div.hasChildNodes())
+		highlight.appendChild(div.firstChild);
+
+	div.appendChild(highlight);
 }
 
 function availableMoves(square) {
@@ -83,6 +96,13 @@ function showHighlights(moves) {
 function playMove(move, piece) {
 	console.log(move);
 	removeHighlights();
+	let square = document.getElementById("s" + move.toX + "_" + move.toY);
+	if (square.hasChildNodes()) {
+		if (!move.isCapture) {
+			console.log("BOARD AND API OUT OF SYNC!!!!! (captured piece)");
+		}
+		square.firstChild.remove();
+	}
 	document.getElementById("s" + move.toX + "_" + move.toY).appendChild(piece);
 }
 
