@@ -15,40 +15,77 @@ class Piece {
         let moves = []
         //bottomleft
         if (this.y > 0 && this.x > 0){
-            for (let i = this.y, j = this.x; i > 0 && j > 0; i--,j--){
-                let move = new Move(this.x,this.y, j, i)
+            let y_pos = this.y
+            let x_pos = this.x 
+            let noHit = true;
+            while (y_pos > 0 && x_pos > 0 && noHit){
+                y_pos--
+                x_pos--
+                if (!board.empty(x_pos, y_pos)){
+                    noHit = false;
+                }
+                let move = new Move(this.x, this.y, x_pos, y_pos)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
-            }
+                
+            } 
         }
         //bottomright
-        if (this.y < 7 && this.x > 0){
-            for(let i = this.y, j = this.x; i > 0 && j < 8; i--,j++){
-                let move = new Move(this.x,this.y, j, i)
+        if (this.y > 0 && this.x < 7){
+            let y_pos = this.y
+            let x_pos = this.x
+            let noHit = true;
+            while (y_pos > 0 && x_pos < 7 && noHit){
+                y_pos--
+                x_pos++
+                if (!board.empty(x_pos, y_pos)){
+                    noHit = false;
+                }
+                let move = new Move(this.x, this.y, x_pos, y_pos)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
-            }
+                
+                
+            } 
         }
         //topright
         if (this.y < 7 && this.x < 7){
-            for(let i = this.y, j = this.x; i < 8 && j < 8; i++,j++){
-                let move = new Move(this.x,this.y, j, i)
+            let y_pos = this.y
+            let x_pos = this.x
+            let noHit = true;
+            while (y_pos < 7 && x_pos < 7 && noHit){
+                y_pos++
+                x_pos++
+                if (!board.empty(x_pos, y_pos)){
+                    noHit = false;
+                }
+                let move = new Move(this.x, this.y, x_pos, y_pos)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
-            }
+            } 
         }
         //topleft
-        if (this.y > 0 && this.x < 7){
-            for(let i = this.y, j = this.x; i < 8 && j > 0; i++,j--){
-                let move = new Move(this.x,this.y, j, i)
+        if (this.y < 7 && this.x > 0){
+            let y_pos = this.y
+            let x_pos = this.x
+            let noHit = true;
+            while (y_pos < 7 && x_pos > 0 && noHit){
+                y_pos++
+                x_pos--
+                if (!board.empty(x_pos, y_pos)){
+                    noHit = false;
+                }
+                let move = new Move(this.x, this.y, x_pos, y_pos)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
-            }
+                
+            } 
         }
+        return moves
     }
     getStraightMoves(board){
         let moves = []
@@ -135,24 +172,23 @@ class King extends Piece {
             }
         }
         if (castleQueen){
+            console.log("castleQueen")
             if (board.empty(this.x - 1, this.y) && board.empty(this.x - 2,this.y) && board.empty(this.x - 3,this.y)) {
-                let kingMove = new Move(this.x, this.y, this.x + 3, this.y)
+                console.log("castleQueen1")
+                let kingMove = new Move(this.x, this.y, this.x - 2, this.y)
                 if (board.isLegalMove_specify(kingMove)){
+                    console.log("castleQueen2")
                     moves.push(kingMove)
                 }
             }
         }
-        let y_pos = this.y + 1
-        let x_pos = this.x - 1
-        let iLimit = this.y - 1;
-        let jLimit = this.x + 1;
-        y_pos = y_pos > 7 ? 7 : y_pos
-        x_pos = x_pos < 0 ? 0 : x_pos
-        jLimit = jLimit > 8 ? 8 : jLimit
-        iLimit = iLimit < -1 ? -1 : iLimit
-        console.log("y_pos: " + y_pos + " x_pos " + x_pos + " jlimit: " + jLimit + " iLimit: " + iLimit)
-        for(let i = y_pos; i > iLimit; i--){
-            for (let j = x_pos; j < jLimit; j++){
+        let y_pos = (this.y < 7) ? this.y + 1 : this.y
+        let x_pos = (this.x > 0) ? this.x - 1 : this.x
+        let y_lim = ((this.y - 2) < -1) ? -1 : this.y - 2
+        let x_lim = ((this.x + 2) > 8) ? 8 : this.x + 2 
+        //console.log("y_pos: " + y_pos + " x_pos " + x_pos + " y_lim: " + y_lim + " x_lim: " + x_lim)
+        for(let i = y_pos; i > y_lim; i--){
+            for (let j = x_pos; j < x_lim; j++){
                 let kingMove = new Move(this.x, this.y, j, i)
                 //console.log("kingMove.fromX: " + kingMove.fromX + " kingMove.fromY: " + kingMove.fromY + " kingMove.toX: " + kingMove.toX + " kingMove.toY: " + kingMove.toY)
                 if (board.isLegalMove_specify(kingMove)){

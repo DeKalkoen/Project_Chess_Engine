@@ -115,7 +115,7 @@ class Board {
     }
 
     empty(x,y){
-        console.log("x: " + x + " y: " + y)
+        console.log(this.convertCoordinates(x,y))
         return (this.squares[y][x] == null)
     }
     isLegalMove_specify(move){
