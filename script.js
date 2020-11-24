@@ -1,3 +1,5 @@
+let chess;
+
 function initiate() {
 	if (window.addEventListener) {
 		window.addEventListener("load", autorun, false);
@@ -37,15 +39,27 @@ function getHoveredSquare(mouseX, mouseY) {
 		}
 	}
 
-	return 's' + col + '_' + row;
+	return {col: col, row: row};
 }
 
 function removeHighlights() {
 	console.log("remove called");
-	let highlightedSquares = document.getElementsByClassName("highlighted");
-	for (let i = 0; i < highlightedSquares.length; i++) {
-		highlightedSquares[i].className.replace(" highlighted", "");
-	}
+	document.querySelectorAll(".highlighted").forEach((div) => {
+		div.parentNode.innerHTML = div.innerHTML;
+	});
+}
+
+function addHighlight(square, type) {
+	let div = document.getElementById(square)
+	div.innerHTML = `<div class="highlighted ${type}">` + div.innerHTML + "</div>";
+}
+
+function showHighlights(square) {
+	removeHighlights();
+	let board = chess.getCurrentBoard();
+	let piece = board.squares[square.row][square.col];
+	let moves = piece.getLegalMoves(board);
+	console.log(moves);
 }
 
 function addPieceToHTML(piece) {
@@ -78,10 +92,12 @@ function addPieceToHTML(piece) {
 	}
 
 	div.onmousedown = (ev) => {
-		let fromSquare = getHoveredSquare(ev.clientX, ev.clientY);
+		let ret = getHoveredSquare(ev.clientX, ev.clientY);
+		let fromSquare = "s" + ret.col + "_" + ret.row;
 		div.style.position = "absolute";
 		div.style.left = (ev.clientX - div.clientWidth / 2) + "px";
 		div.style.top = (ev.clientY - div.clientHeight / 1.8) + "px";
+		showHighlights(ret);
 
 		document.onmousemove = (event) => {
 			div.style.left = (event.clientX - div.clientWidth / 2) + "px";
@@ -91,7 +107,8 @@ function addPieceToHTML(piece) {
 		document.onmouseup = (event) => {
 			document.onmousemove = null;
 			document.onmouseup = null;
-			let toSquare = getHoveredSquare(event.clientX, event.clientY);
+			let ret2 = getHoveredSquare(event.clientX, event.clientY);
+			let toSquare = "s" + ret2.col + "_" + ret2.row;
 			playMove(fromSquare, div, toSquare);
 
 			div.style.left = "";
@@ -136,7 +153,7 @@ function placePieces(board) {
 
 function autorun() {
 	generateBoard();
-	let chess = new Chess();
+	chess = new Chess();
 	placePieces(chess.getCurrentBoard());
 }
 
