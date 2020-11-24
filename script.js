@@ -12,13 +12,6 @@ function initiate() {
 	}
 }
 
-function playMove(fromSquare, div, toSquare) {
-	console.log("from: " + fromSquare);
-	console.log("to: " + toSquare);
-
-	document.getElementById(toSquare).appendChild(div);
-}
-
 function getHoveredSquare(mouseX, mouseY) {
 	let row = INVALID;
 	let col = INVALID;
@@ -54,16 +47,43 @@ function addHighlight(square, type) {
 	div.innerHTML = `<div class="highlighted ${type}">` + div.innerHTML + "</div>";
 }
 
-function showHighlights(square) {
-	removeHighlights();
+function availableMoves(square) {
 	let board = chess.getCurrentBoard();
 	let piece = board.squares[square.row][square.col];
 	if (!piece) {
 		console.log("BOARD AND CHESS API OUT OF SYNC!!!");
-		return;
+		return null;
 	}
-	let moves = piece.getLegalMoves(board);
-	console.log(moves);
+	return piece.getLegalMoves(board);
+}
+
+function getMove(moves, coord) {
+	if (!moves)
+		return null;
+
+	for (let i = 0; i < moves.length; i++)
+		if (moves[i].toX == coord.col && moves[i].toY == coord.row)
+			return moves[i];
+
+	return null;
+}
+
+function showHighlights(moves) {
+	for (let i = 0; i < moves.length; i++) {
+		let id = "s" + moves[i].toX + "_" + moves[i].toY;
+		if (moves[i].isCapture) {
+			addHighlight(id, "capture_move");
+		}
+		else {
+			addHighlight(id, "non_capture_move");
+		}
+	}
+}
+
+function playMove(move, piece) {
+	console.log(move);
+	removeHighlights();
+	document.getElementById("s" + move.toX + "_" + move.toY).appendChild(piece);
 }
 
 function addPieceToHTML(piece) {
@@ -101,7 +121,13 @@ function addPieceToHTML(piece) {
 		div.style.position = "absolute";
 		div.style.left = (ev.clientX - div.clientWidth / 2) + "px";
 		div.style.top = (ev.clientY - div.clientHeight / 1.8) + "px";
-		showHighlights(ret);
+		let moves = availableMoves(ret);
+		if (!moves) {
+			console.log("Moves == null");
+		}
+		else {
+			showHighlights(moves);
+		}
 
 		document.onmousemove = (event) => {
 			div.style.left = (event.clientX - div.clientWidth / 2) + "px";
@@ -112,8 +138,10 @@ function addPieceToHTML(piece) {
 			document.onmousemove = null;
 			document.onmouseup = null;
 			let ret2 = getHoveredSquare(event.clientX, event.clientY);
-			let toSquare = "s" + ret2.col + "_" + ret2.row;
-			playMove(fromSquare, div, toSquare);
+
+			let move = getMove(moves, ret2);
+			if (move)
+				playMove(move, div);
 
 			div.style.left = "";
 			div.style.top = "";
