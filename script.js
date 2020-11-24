@@ -58,6 +58,10 @@ function showHighlights(square) {
 	removeHighlights();
 	let board = chess.getCurrentBoard();
 	let piece = board.squares[square.row][square.col];
+	if (!piece) {
+		console.log("BOARD AND CHESS API OUT OF SYNC!!!");
+		return;
+	}
 	let moves = piece.getLegalMoves(board);
 	console.log(moves);
 }
@@ -143,7 +147,7 @@ function generateBoard() {
 					addHighlight(square.id, "selected");
 				}
 			}
-			//square.onclick = removeHighlights();
+			square.onclick = removeHighlights;
 			rank.appendChild(square);
 		}
 		document.getElementById("board").appendChild(rank);
