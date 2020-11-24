@@ -120,7 +120,7 @@ class Board {
     isLegalMove_specify(move){
         //todo check if king not in check after move
         let coords = [move.fromX, move.fromY, move.toX, move.toY]
-        for (i in coords){
+        for (let i in coords){
             if (!isNaN(i)){
                 console.log("isLegalMove_specify only takes numbers!")
                 return false   
