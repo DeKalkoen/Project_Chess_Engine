@@ -104,6 +104,7 @@ function playMove(move, piece) {
 		square.firstChild.remove();
 	}
 	document.getElementById("s" + move.toX + "_" + move.toY).appendChild(piece);
+	chess.makeMoveOnCurrent(move);
 }
 
 function addPieceToHTML(piece) {

@@ -32,7 +32,7 @@ class Chess {
         let currentType = nextBoard.squares[move.fromY][move.fromX].type
         let currentTurn = nextBoard.getWhoseTurn()
         nextBoard.turn = 1 - currentTurn
-        nextBoard.halfmoves = (move.isPawnMove) ? 0 : halfmoves + 1
+        nextBoard.halfmoves = (move.isPawnMove) ? 0 : nextBoard.halfmoves + 1
         let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
 
         if (pieceIndex < 0) {
@@ -55,11 +55,11 @@ class Chess {
             nextBoard.blackPieces[pieceIndex].moveTo(move.toX, move.toY)
             if (move.isCastle) {
                 if (move.toX == 6) {
-                    let blackRookIndex = getPieceIndex(7, 7, BLACK)
+                    let blackRookIndex = nextBoard.getPieceIndex(7, 7, BLACK)
                     nextBoard.blackPieces[blackRookIndex].x = 5
                 }
                 else if (move.toX == 2) {
-                    let blackRookIndex = getPieceIndex(0, 7, BLACK)
+                    let blackRookIndex = nextBoard.getPieceIndex(0, 7, BLACK)
                     nextBoard.blackPieces[blackRookIndex].x = 3
                 }
             }
@@ -67,21 +67,21 @@ class Chess {
         else {
             nextBoard.whitePieces[pieceIndex].moveTo(move.toX, move.toY)
             if (move.isCastle) {
-                if (move.toX == 6){
-                    let whiteRookIndex = getPieceIndex(7, 0, WHITE)
-                    nextBoard.whitePieces[whiteRookIndex].x = 5
+                if (move.toX == 6) {
+                    let whiteRookIndex = nextBoard.getPieceIndex(7, 0, WHITE)
+                    nextBoard.whitePieces[whiteRookIndex].x = 5;
                 }
-                else if (move.toX == 2){
-                    let blackRookIndex = getPieceIndex(0, 0, WHITE)
-                    nextBoard.blackPieces[blackRookIndex].x = 3
+                else if (move.toX == 2) {
+                    let blackRookIndex = nextBoard.getPieceIndex(0, 0, WHITE)
+                    nextBoard.blackPieces[blackRookIndex].x = 3;
                 }
             }
         }
         if (currentType == KING || currentType == ROOK) {
-            nextBoard.updateCastlingRights(move)
+            nextBoard.updateCastlingRights(move);
         }
-        this.positions.push(nextBoard)
-        this.moves.push(moves)
+        this.positions.push(nextBoard);
+        this.moves.push(move);
     }
 
     getLegalMoves() {
