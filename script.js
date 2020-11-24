@@ -40,6 +40,14 @@ function getHoveredSquare(mouseX, mouseY) {
 	return 's' + col + '_' + row;
 }
 
+function removeHighlights() {
+	console.log("remove called");
+	let highlightedSquares = document.getElementsByClassName("highlighted");
+	for (let i = 0; i < highlightedSquares.length; i++) {
+		highlightedSquares[i].className.replace(" highlighted", "");
+	}
+}
+
 function addPieceToHTML(piece) {
 	let div = document.createElement("div");
 

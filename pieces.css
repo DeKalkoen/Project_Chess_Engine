@@ -8,6 +8,9 @@
 
 .piece:active {
     cursor: grabbing;
+    filter: drop-shadow(5px 5px 5px #333333);
+    width: 12.5vh;
+    height: 12.5vh;
 }
 
 .white_pawn {
