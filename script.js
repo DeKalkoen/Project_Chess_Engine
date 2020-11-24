@@ -10,6 +10,36 @@ function initiate() {
 	}
 }
 
+function playMove(fromSquare, div, toSquare) {
+	console.log("from: " + fromSquare);
+	console.log("to: " + toSquare);
+
+	document.getElementById(toSquare).appendChild(div);
+}
+
+function getHoveredSquare(mouseX, mouseY) {
+	let row = INVALID;
+	let col = INVALID;
+
+	for (let j = 0; j < BOARD_SIZE; j++) {
+		let square = document.getElementById("s" + j + "_0").getBoundingClientRect();
+		if (square.x < mouseX && mouseX < square.x + square.width) {
+			col = j;
+			break;
+		}
+	}
+
+	for (let i = 0; i < BOARD_SIZE; i++) {
+		let square = document.getElementById("s0_" + i).getBoundingClientRect();
+		if (square.y < mouseY && mouseY < square.y + square.height) {
+			row = i;
+			break;
+		}
+	}
+
+	return 's' + col + '_' + row;
+}
+
 function addPieceToHTML(piece) {
 	let div = document.createElement("div");
 
@@ -38,6 +68,26 @@ function addPieceToHTML(piece) {
 	else if (piece.type === PAWN) {
 		div.className += "_pawn";
 	}
+
+	div.onmousedown = (ev) => {
+		let fromSquare = getHoveredSquare(ev.clientX, ev.clientY);
+		div.style.position = "absolute";
+		document.onmousemove = (event) => {
+			div.style.left = (event.clientX - div.clientWidth / 2) + "px";
+			div.style.top = (event.clientY - div.clientHeight / 1.8) + "px";
+		};
+
+		document.onmouseup = (event) => {
+			document.onmousemove = null;
+			document.onmouseup = null;
+			let toSquare = getHoveredSquare(event.clientX, event.clientY);
+			playMove(fromSquare, div, toSquare);
+
+			div.style.left = "";
+			div.style.top = "";
+			div.style.position = "";
+		};
+	};
 
 	let square = document.getElementById('s' + piece.x + '_' + piece.y);
 	square.appendChild(div);
