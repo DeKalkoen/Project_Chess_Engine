@@ -91,8 +91,8 @@ class Piece {
         let moves = []
         //downwards
         if (this.y > 0){
-            for (let i = this.y - 1; i > 0 ; i--){
-                let move = new Move(this.x,this.y, this.x, i)
+            for (let i = this.y - 1; i >= 0 ; i--){
+                let move = new Move(this.x, this.y, this.x, i)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)
                 }
