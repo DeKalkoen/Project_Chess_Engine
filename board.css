@@ -1,3 +1,7 @@
+body {
+    background-color: #312e2b;
+}
+
 #board {
     width: 96vh;
     height: 96vh;
@@ -16,10 +20,30 @@
     background-size: cover;
 }
 
+#s0_0 {
+    border-bottom-left-radius: 5px;
+}
+
+#s7_0 {
+    border-bottom-right-radius: 5px;
+}
+
+#s0_7 {
+    border-top-left-radius: 5px;
+}
+
+#s7_7 {
+    border-top-right-radius: 5px;
+}
+
 .light {
     background-image: url("assets/light_square.png");
 }
 
 .dark {
     background-image: url("assets/dark_square.png");
+}
+
+.highlighted {
+    background-color: rgba(234, 56, 39, 0.7);
 }
