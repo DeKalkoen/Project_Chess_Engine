@@ -117,11 +117,12 @@ function addPieceToHTML(piece) {
 
 	div.onmousedown = (ev) => {
 		let ret = getHoveredSquare(ev.clientX, ev.clientY);
-		let fromSquare = "s" + ret.col + "_" + ret.row;
 		div.style.position = "absolute";
 		div.style.left = (ev.clientX - div.clientWidth / 2) + "px";
 		div.style.top = (ev.clientY - div.clientHeight / 1.8) + "px";
 		let moves = availableMoves(ret);
+		console.log(moves);
+		removeHighlights();
 		if (!moves) {
 			console.log("Moves == null");
 		}
@@ -175,7 +176,10 @@ function generateBoard() {
 					addHighlight(square.id, "selected");
 				}
 			}
-			square.onclick = removeHighlights;
+			square.onmousedown = () => {
+				if (!square.hasChildNodes())
+					removeHighlights();
+			}
 			rank.appendChild(square);
 		}
 		document.getElementById("board").appendChild(rank);
