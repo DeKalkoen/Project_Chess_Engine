@@ -2,7 +2,7 @@
     width: 12vh;
     height: 12vh;
 
-    background-size: cover;
+    cursor: grab;
 }
 
 .white_pawn {
