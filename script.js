@@ -50,7 +50,7 @@ function removeHighlights() {
 }
 
 function addHighlight(square, type) {
-	let div = document.getElementById(square)
+	let div = document.getElementById(square);
 	div.innerHTML = `<div class="highlighted ${type}">` + div.innerHTML + "</div>";
 }
 
@@ -135,6 +135,15 @@ function generateBoard() {
 			else {
 				square.className += "dark";
 			}
+			square.oncontextmenu = (event) => {
+				event.preventDefault();
+				if (square.hasChildNodes())
+					square.innerHTML = square.firstChild.innerHTML;
+				else {
+					addHighlight(square.id, "selected");
+				}
+			}
+			//square.onclick = removeHighlights();
 			rank.appendChild(square);
 		}
 		document.getElementById("board").appendChild(rank);

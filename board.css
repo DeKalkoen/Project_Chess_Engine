@@ -44,6 +44,12 @@ body {
     background-image: url("assets/dark_square.png");
 }
 
+.selected {
+    height: 12vh;
+    width: 12vh;
+    background-color: rgba(244, 50, 12, 0.7);
+}
+
 .non_capture_move {
     border-radius: 2vh;
     height: 4vh;
