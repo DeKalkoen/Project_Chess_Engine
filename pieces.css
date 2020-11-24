@@ -6,6 +6,10 @@
     cursor: grab;
 }
 
+.piece:active {
+    cursor: grabbing;
+}
+
 .white_pawn {
     background-image: url("assets/white_pawn.png");
 }

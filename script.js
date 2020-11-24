@@ -72,6 +72,9 @@ function addPieceToHTML(piece) {
 	div.onmousedown = (ev) => {
 		let fromSquare = getHoveredSquare(ev.clientX, ev.clientY);
 		div.style.position = "absolute";
+		div.style.left = (ev.clientX - div.clientWidth / 2) + "px";
+		div.style.top = (ev.clientY - div.clientHeight / 1.8) + "px";
+
 		document.onmousemove = (event) => {
 			div.style.left = (event.clientX - div.clientWidth / 2) + "px";
 			div.style.top = (event.clientY - div.clientHeight / 1.8) + "px";
