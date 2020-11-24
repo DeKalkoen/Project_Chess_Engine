@@ -6,7 +6,8 @@ class Chess {
     constructor(fen) {
         let error = undefined;
         if (!fen)
-            error = this.loadFEN(DEFAULT_FEN);
+            //error = this.loadFEN(DEFAULT_FEN);
+            error = this.loadFEN(TEST_FEN)
         else
             error = this.loadFEN(fen);
 
@@ -29,12 +30,34 @@ class Chess {
         let nextBoard = this.getCurrentBoard()
         currentTurn = nextBoard.getWhoseTurn()
         nextBoard.turn = (currentTurn + 1) % 2
-        
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : halfmoves + 1
-
         let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
+
         if (pieceIndex < 0){
             console.log("Piece with color: " +  currentTurn + " not found in respective pieces array")
+            return false
+        }
+        let legal = false;
+        if (currentTurn == BLACK){
+            let legalMoves = nextBoard.blackPieces[pieceIndex].getLegalMoves(nextBoard)
+            for (i in legalMoves){
+                if (move === i){
+                    legal = true
+                }
+            }
+            
+        }
+        else {
+            let legalMoves = nextBoard.blackPieces[pieceIndex].getLegalMoves(nextBoard)
+            for (i in legalMoves){
+                if (move === i){
+                    legal = true
+                }
+            }
+        }
+        if (!legal){
+            console.log("Move made was nog legal")
+            return false;
         }
         //captured xy first then update the capturing xy
         if(move.isCapture){
@@ -78,9 +101,10 @@ class Chess {
         nextBoard.updateCastlingRights(move)
         this.positions.push(nextBoard)
         this.moves.push(moves)
+        return true
     }
     getLegalMoves(){
-        let legalMoves= [];
+        let legalMoves= []
         let current = this.getCurrentBoard()
         if (current.turn == WHITE){
             for (let i = 0 ; i < current.whitePieces.length; i++){
@@ -149,9 +173,9 @@ class Chess {
             console.log("Move number must be an integer that is > 0.")
             return false;
         }
-
         let whiteKing = false
         let blackKing = false
+        let kings = 0
         //positions are valid
         for (let i = 0; i < positions.length; i++) {
             //sum ranks and no 2 consecutive numbers
@@ -174,18 +198,24 @@ class Chess {
                     }
                     if (positions[i][j] == 'k') {
                         blackKing = true;
+                        kings++
                     }
                     if (positions[i][j] == 'K') {
                         whiteKing = true;
+                        kings++
                     }
                     sumRank += 1
                     prev_num = false
                 }
+                if (sumRank > 8 || sumRank < 0){
+                    console.log("FEN rank sums up to > 8 or < 0")
+                    return false
+                }
             }
         }
         //must have kings
-        if (!(whiteKing && blackKing)) {
-            console.log("FEN must contain both the white and the black king")
+        if (!(whiteKing && blackKing && (kings == 2))) {
+            console.log("FEN must contain exactly one white and one black king")
             return false
         }
         console.log("Valid fen!")
