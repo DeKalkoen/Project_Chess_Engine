@@ -90,6 +90,10 @@ class Piece {
         }
         return moves
     }
+    moveTo(x,y){
+        this.x = x
+        this.y = y
+    }
 }
 
 class King extends Piece {
@@ -110,7 +114,6 @@ class King extends Piece {
         }
         //castling
         //todo, king may not be in check + castling squares may not be attacked! (rook may be attacked np)
-        //todo, castling rights taken away when rook/king moves.
         if (castleKing) {
             if (board.empty(this.x + 1, this.y) && board.empty(this.x + 2,this.y)) {
                 let kingMove = new Move(this.x, this.y, this.x + 2, this.y)
