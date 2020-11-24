@@ -9,8 +9,8 @@ class Board {
     blackCastleKing;
     blackCastleQueen;
     enPassant = "";
-    halfMoves = 0;
-    fullMoves = 0;
+    halfmoves = 0;
+    fullmoves = 0;
 
     constructor(fen) {
         this.loadFEN(fen);
@@ -44,8 +44,8 @@ class Board {
 
 
         this.enPassant = fields[3]
-        this.halfMoves = fields [4]
-        this.fullMoves = fields[5]
+        this.halfmoves = parseInt(fields[4],10)
+        this.fullmoves = parseInt(fields[5],10)
         for (let i = 0; i < BOARD_SIZE; i ++) {
             let board_j = 0;
             for (let j = 0; j < positions[i].length; j++){
@@ -120,6 +120,14 @@ class Board {
     isLegalMove(move){
         //todo check if king not in check after move
         //move is in board && is number
+        let fromType = this.squares[move.fromY][move.fromX].type
+        move.isPawnMove = ( fromType == PAWN) ? true : false
+        
+        if (fromType == KING){
+            //-2 % 2 == -0 == 0 == 2 % 2
+            move.isCastle = ((move.fromX - move.toX) % 2 == 0) ? true : false 
+        }
+        
         let coords = [move.fromX, move.fromY, move.toX, move.toY]
         for (i in coords){
             if (!isNaN(i)){
@@ -127,19 +135,67 @@ class Board {
                 return false   
             }
             if (i > 7 || i < 0){
-                console.log("isLegalMoves only takes numbers!")
+                console.log("move is outside of board!")
                 return false
             }
         }
+        
+         
+        //todo en passant captures in front
         if (this.empty(move.toX,move.toY)){
             return true;
         }
         //capture
-        else if (!(this.squares[move.fromY][move.fromX].color == this.squares[move.toY][move.toX].color)){
+        if (!(this.squares[move.fromY][move.fromX].color == this.squares[move.toY][move.toX].color)){
+            move.isCapture = true;
             return true;
         }
-        return false;
+        else {
+            move.isCapture = false;
+            return false;
+        }
     }
+    getPieceIndex(x,y,color){
+        //slow -> pieces copies array(?)
+        let pieces = (color == WHITE) ? whitePieces : blackPieces
+        for (let i = 0; i < this.pieces.length; i++){
+            if (this.pieces[i].x == x){
+                if (this.pieces[i].y == y){
+                    return i
+                }
+            }
+        }
+        return -1
+    }
+    updateCastlingRights(move){
+        //white rook/king moves (or has moved)
+        if (move.fromY == 0){
+            if (move.fromX == 0){
+                this.whiteCastleQueen = false
+            }
+            else if (move.fromX == 4){
+                this.whiteCastleQueen = false
+                this.whiteCastleKing = false
+            }
+            else if (move.fromX == 7){
+                this.whiteCastleKing = false
+            }
+        }
+        //black rook/king moves (or has moved)
+        else if (move.fromY == 7){
+            if (move.fromX == 0){
+                this.blackCastleQueen = false
+            }
+            else if (move.fromX == 4){
+                this.whiteCastleQueen = false
+                this.whiteCastleKing = false
+            }
+            else if (move.fromX == 7){
+                this.blackCastleKing = false
+            }
+        }
+    }
+    
 
     getWhiteLegalMoves() {
         

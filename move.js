@@ -3,6 +3,10 @@ class Move {
     fromY = INVALID;
     toX = INVALID;
     toY = INVALID;
+    isCapture = INVALID;
+    isPawnMove = INVALID;
+    isCastle = INVALID;
+    
     constructor(fromX, fromY, toX, toY){
         this.fromX = fromX
         this.fromY = fromY

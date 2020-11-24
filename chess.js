@@ -25,8 +25,59 @@ class Chess {
         }
         return this.positions[this.positions.length - 1];
     }
-    makeMove(move){
+    makeMoveOnCurrent(move){
+        let nextBoard = this.getCurrentBoard()
+        currentTurn = nextBoard.getWhoseTurn()
+        nextBoard.turn = (currentTurn + 1) % 2
+        
+        nextBoard.halfmoves = (move.isPawnMove) ? 0 : halfmoves + 1
 
+        let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
+        if (pieceIndex < 0){
+            console.log("Piece with color: " +  currentTurn + " not found in respective pieces array")
+        }
+        //captured xy first then update the capturing xy
+        if(move.isCapture){
+            nextBoard.halfmoves = 0
+            let captureIndex = nextBoard.getPieceIndex(move.toX, move.toY, nextBoard.turn)
+            if (currentTurn == BLACK){
+                nextBoard.whitePieces.splice(captureIndex, 1)
+            }
+            else {
+                nextBoard.blackPieces.splice(captureIndex, 1)
+            }
+        }
+        
+        if (currentTurn == BLACK){
+            nextBoard.fullmoves++
+            nextBoard.blackPieces[pieceIndex].moveTo(move.toX, move.toY)
+            if (move.isCastle){
+                if (move.toX == 6){
+                    let blackRookIndex = getPieceIndex(7, 7, BLACK)
+                    nextBoard.blackPieces[blackRookIndex].x = 5
+                }
+                else if (move.toX == 2){
+                    let blackRookIndex = getPieceIndex(0, 7, BLACK)
+                    nextBoard.blackPieces[blackRookIndex].x = 3
+                }
+            }
+        }
+        else{
+            nextBoard.whitePieces[pieceIndex].moveTo(move.toX, move.toY)
+            if (move.isCastle){
+                if (move.toX == 6){
+                    let whiteRookIndex = getPieceIndex(7, 0, WHITE)
+                    nextBoard.whitePieces[whiteRookIndex].x = 5
+                }
+                else if (move.toX == 2){
+                    let blackRookIndex = getPieceIndex(0, 0, WHITE)
+                    nextBoard.blackPieces[blackRookIndex].x = 3
+                }
+            }
+        }
+        nextBoard.updateCastlingRights(move)
+        this.positions.push(nextBoard)
+        this.moves.push(moves)
     }
     getLegalMoves(){
         let legalMoves= [];
