@@ -162,8 +162,7 @@ class King extends Piece {
         let moves = []
         let castleKing
         let castleQueen
-        console.log(this.type, WHITE)
-        if (this.type == WHITE) {
+        if (this.color == WHITE) {
             castleKing = board.whiteCastleKing
             castleQueen = board.whiteCastleQueen
         }

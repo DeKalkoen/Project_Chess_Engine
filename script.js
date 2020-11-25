@@ -48,7 +48,6 @@ function removeHighlight(div) {
 }
 
 function removeAllHighlights() {
-	console.log("remove called");
 	document.querySelectorAll(".highlighted").forEach((div) => removeHighlight(div));
 }
 
