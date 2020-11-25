@@ -58,12 +58,12 @@ class Chess {
                 if (move.toX == 6) {
                     let blackRookIndex = nextBoard.getPieceIndex(7, 7, BLACK)
                     nextBoard.blackPieces[blackRookIndex].x = 5
-                    nextBoard.squares[7][5] = nextBoard.blackPieces[pieceIndex]
+                    nextBoard.squares[7][5] = nextBoard.blackPieces[blackRookIndex]
                 }
                 else if (move.toX == 2) {
                     let blackRookIndex = nextBoard.getPieceIndex(0, 7, BLACK)
                     nextBoard.blackPieces[blackRookIndex].x = 3
-                    nextBoard.squares[7][3] = nextBoard.blackPieces[pieceIndex]
+                    nextBoard.squares[7][3] = nextBoard.blackPieces[blackRookIndex]
                 }
             }
         }
@@ -74,12 +74,12 @@ class Chess {
                 if (move.toX == 6) {
                     let whiteRookIndex = nextBoard.getPieceIndex(7, 0, WHITE)
                     nextBoard.whitePieces[whiteRookIndex].x = 5;
-                    nextBoard.squares[0][5] = nextBoard.blackPieces[pieceIndex]
+                    nextBoard.squares[0][5] = nextBoard.whitePieces[whiteRookIndex]
                 }
                 else if (move.toX == 2) {
-                    let blackRookIndex = nextBoard.getPieceIndex(0, 0, WHITE)
-                    nextBoard.blackPieces[blackRookIndex].x = 3;
-                    nextBoard.squares[0][3] = nextBoard.blackPieces[pieceIndex]
+                    let whiteRookIndex = nextBoard.getPieceIndex(0, 0, WHITE)
+                    nextBoard.whitePieces[whiteRookIndex].x = 3;
+                    nextBoard.squares[0][3] = nextBoard.whitePieces[whiteRookIndex]
                 }
             }
         }
