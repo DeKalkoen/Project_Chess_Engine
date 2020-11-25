@@ -197,8 +197,8 @@ function generateBoard() {
 					addHighlight(square.id, "selected");
 				}
 			}
-			square.onmousedown = () => {
-				if (!square.hasChildNodes())
+			square.onmousedown = (ev) => {
+				if (!square.hasChildNodes() && ev.button != 2)
 					removeHighlights();
 			}
 			rank.appendChild(square);
