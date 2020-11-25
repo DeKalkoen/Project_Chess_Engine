@@ -34,6 +34,7 @@ class Chess {
         nextBoard.turn = 1 - currentTurn
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : nextBoard.halfmoves + 1
         let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
+        console.log("currentColor: " + nextBoard.squares[move.fromY][move.fromX].color)
 
         if (pieceIndex < 0) {
             console.log("Piece with color: " +  currentTurn + " not found in respective pieces array")

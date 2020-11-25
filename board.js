@@ -227,8 +227,8 @@ class Board {
                 this.blackCastleQueen = false
             }
             else if (move.fromX == 4){
-                this.whiteCastleQueen = false
-                this.whiteCastleKing = false
+                this.blackCastleQueen = false
+                this.blackCastleKing = false
             }
             else if (move.fromX == 7){
                 this.blackCastleKing = false
