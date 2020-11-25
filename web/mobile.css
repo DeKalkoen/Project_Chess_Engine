@@ -1,0 +1,55 @@
+@media all and (orientation: portrait) {    
+    #board {
+        width: 96vw;
+        height: 96vw;
+        margin: auto;
+    }
+    
+    .rank {
+        width: 96vw;
+    }
+    
+    .square {
+        width: 12vw;
+        height: 12vw;
+    
+        float: left;
+        background-size: cover;
+    }
+
+    .piece {
+        width: 12vw;
+        height: 12vw;
+    
+        background-size: cover;
+        cursor: grab;
+    }
+    
+    .piece:active {
+        cursor: grabbing;
+        filter: drop-shadow(5px 5px 5px #333333);
+        width: 12.5vw;
+        height: 12.5vw;
+    }
+
+    .highlighted_selected {
+        height: 12vw;
+        width: 12vw;
+        background-color: rgba(244, 50, 12, 0.7);
+    }
+
+    .highlighted_non_capture_option {
+        border-radius: 2vw;
+        height: 4vw;
+        width: 4vw;
+        margin: 4vw;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    .highlighted_capture_option {
+        border-radius: 6vw;
+        height: 12vw;
+        width: 12vw;
+        box-shadow: inset 0 0 0 1vw rgba(0, 0, 0, 0.3);
+    }
+}
