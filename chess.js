@@ -53,27 +53,33 @@ class Chess {
         if (currentTurn == BLACK) {
             nextBoard.fullmoves++
             nextBoard.blackPieces[pieceIndex].moveTo(move.toX, move.toY)
+            nextBoard.squares[move.toY][move.toX] = nextBoard.blackPieces[pieceIndex]
             if (move.isCastle) {
                 if (move.toX == 6) {
                     let blackRookIndex = nextBoard.getPieceIndex(7, 7, BLACK)
                     nextBoard.blackPieces[blackRookIndex].x = 5
+                    nextBoard.squares[7][5] = nextBoard.blackPieces[pieceIndex]
                 }
                 else if (move.toX == 2) {
                     let blackRookIndex = nextBoard.getPieceIndex(0, 7, BLACK)
                     nextBoard.blackPieces[blackRookIndex].x = 3
+                    nextBoard.squares[7][3] = nextBoard.blackPieces[pieceIndex]
                 }
             }
         }
         else {
             nextBoard.whitePieces[pieceIndex].moveTo(move.toX, move.toY)
+            nextBoard.squares[move.toY][move.toX] = nextBoard.whitePieces[pieceIndex]
             if (move.isCastle) {
                 if (move.toX == 6) {
                     let whiteRookIndex = nextBoard.getPieceIndex(7, 0, WHITE)
                     nextBoard.whitePieces[whiteRookIndex].x = 5;
+                    nextBoard.squares[0][5] = nextBoard.blackPieces[pieceIndex]
                 }
                 else if (move.toX == 2) {
                     let blackRookIndex = nextBoard.getPieceIndex(0, 0, WHITE)
                     nextBoard.blackPieces[blackRookIndex].x = 3;
+                    nextBoard.squares[0][3] = nextBoard.blackPieces[pieceIndex]
                 }
             }
         }
