@@ -28,24 +28,25 @@ class Board {
                     string += (" - ")
                 }
                 else{
+                    let color = this.squares[i][j].color
                     switch(this.squares[i][j].type){
                         case KING:
-                            string += (this.squares[i][j].color == WHITE) ? " K " : " k "
+                            string += (color == WHITE) ? " K " : " k "
                             break;
                         case QUEEN:
-                            string += (this.squares[i][j].color == WHITE) ? " Q " : " q "
+                            string += (color == WHITE) ? " Q " : " q "
                             break;
                         case ROOK:
-                            string += (this.squares[i][j].color == WHITE) ? " R " : " r "
+                            string += (color == WHITE) ? " R " : " r "
                             break;
                         case BISHOP:
-                            string += (this.squares[i][j].color == WHITE) ? " B " : " b "
+                            string += (color == WHITE) ? " B " : " b "
                             break;
                         case KNIGHT:
-                            string += (this.squares[i][j].color == WHITE) ? " N " : " n "
+                            string += (color == WHITE) ? " N " : " n "
                             break;
                         case PAWN:
-                            string += (this.squares[i][j].color == WHITE) ? " P " : " p "
+                            string += (color == WHITE) ? " P " : " p "
                             break;
                     }
                 }

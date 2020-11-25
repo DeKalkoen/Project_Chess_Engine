@@ -6,8 +6,8 @@ class Chess {
     constructor(fen) {
         let error = undefined;
         if (!fen)
-            //error = this.loadFEN(DEFAULT_FEN);
-            error = this.loadFEN(TEST_FEN)
+            error = this.loadFEN(DEFAULT_FEN);
+            //error = this.loadFEN(TEST_FEN)
         else
             error = this.loadFEN(fen);
 
