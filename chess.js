@@ -49,7 +49,8 @@ class Chess {
                 nextBoard.blackPieces.splice(captureIndex, 1)
             }
         }
-        
+        //remove current piece from where it was
+        nextBoard.squares[move.fromY][move.fromX] = null;
         if (currentTurn == BLACK) {
             nextBoard.fullmoves++
             nextBoard.blackPieces[pieceIndex].moveTo(move.toX, move.toY)
@@ -70,6 +71,7 @@ class Chess {
         else {
             nextBoard.whitePieces[pieceIndex].moveTo(move.toX, move.toY)
             nextBoard.squares[move.toY][move.toX] = nextBoard.whitePieces[pieceIndex]
+            
             if (move.isCastle) {
                 if (move.toX == 6) {
                     let whiteRookIndex = nextBoard.getPieceIndex(7, 0, WHITE)

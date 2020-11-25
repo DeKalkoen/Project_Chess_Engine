@@ -15,11 +15,11 @@ class Board {
     constructor(fen) {
         this.loadFEN(fen);
     }
+    //debugging
     log(){
         let string = "logging board: \n";
        
-        for (let i = BOARD_SIZE - 1; i >= 0; i--){
-            
+        for (let i = BOARD_SIZE - 1; i >= 0; i--){   
             for(let j = 0; j < BOARD_SIZE; j++){
                 let string2;
                 if (this.empty(j,i)){
@@ -54,7 +54,6 @@ class Board {
                             break;
                     }
                 }
-            
             }
             console.log(string)
             string = "";
@@ -164,12 +163,12 @@ class Board {
     isLegalMove_specify(move){
         //todo check if king not in check after move
         let coords = [move.fromX, move.fromY, move.toX, move.toY]
-        for (let i in coords){
-            if (isNaN(i)){                
+        for (let i = 0; i < coords.length; i++){
+            if (isNaN(coords[i])){                
                 console.log("isLegalMove_specify only takes numbers!")
                 return false   
             }
-            if (i > 7 || i < 0){
+            if (coords[i] > 7 || coords[i] < 0){
                 console.log("move is outside of board!")
                 return false
             }
