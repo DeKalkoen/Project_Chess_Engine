@@ -121,7 +121,7 @@ class Piece {
         } 
         //left
         if (this.x > 0 ){
-            for(let i = this.x - 1; i > 0; i--){
+            for(let i = this.x - 1; i >= 0; i--){
                 let move = new Move(this.x,this.y, i, this.y)
                 if (board.isLegalMove_specify(move)){
                     moves.push(move)

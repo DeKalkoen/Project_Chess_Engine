@@ -46,13 +46,29 @@ html, body {
     background-image: url("assets/dark_square.png");
 }
 
-.selected {
+.highlighted_selected {
     height: 12vh;
     width: 12vh;
     background-color: rgba(244, 50, 12, 0.7);
 }
 
-.non_capture_move {
+.light.highlighted_move_current {
+    background-image: url("assets/highlighted_light_square.png");
+}
+
+.dark.highlighted_move_current {
+    background-image: url("assets/highlighted_dark_square.png");
+}
+
+.light.highlighted_move_last {
+    background-image: url("assets/highlighted_light_square.png");
+}
+
+.dark.highlighted_move_last {
+    background-image: url("assets/highlighted_dark_square.png");
+}
+
+.highlighted_non_capture_option {
     border-radius: 2vh;
     height: 4vh;
     width: 4vh;
@@ -60,7 +76,7 @@ html, body {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-.capture_move {
+.highlighted_capture_option {
     border-radius: 6vh;
     height: 12vh;
     width: 12vh;
