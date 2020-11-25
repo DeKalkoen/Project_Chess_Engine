@@ -35,19 +35,21 @@ function getHoveredSquare(mouseX, mouseY) {
 	return {col: col, row: row};
 }
 
-function removeHighlights() {
+function removeHighlight(div) {
+	if (div.hasChildNodes()) {
+		let piece = div.firstChild;
+		let square = div.parentNode;
+		div.remove();
+		square.appendChild(piece);
+	}
+	else {
+		div.remove();
+	}
+}
+
+function removeAllHighlights() {
 	console.log("remove called");
-	document.querySelectorAll(".highlighted").forEach((div) => {
-		if (div.hasChildNodes()) {
-			let piece = div.firstChild;
-			let square = div.parentNode;
-			div.remove();
-			square.appendChild(piece);
-		}
-		else {
-			div.remove();
-		}
-	});
+	document.querySelectorAll(".highlighted").forEach((div) => removeHighlight(div));
 }
 
 function addHighlight(square, type) {
@@ -95,7 +97,7 @@ function showHighlights(moves) {
 
 function playMove(move, piece) {
 	console.log(move);
-	removeHighlights();
+	removeAllHighlights();
 	let square = document.getElementById("s" + move.toX + "_" + move.toY);
 	if (square.hasChildNodes()) {
 		if (!move.isCapture) {
@@ -137,13 +139,14 @@ function addPieceToHTML(piece) {
 	}
 
 	div.onmousedown = (ev) => {
+		if (ev.button == 2) return;
 		let ret = getHoveredSquare(ev.clientX, ev.clientY);
 		div.style.position = "absolute";
 		div.style.left = (ev.clientX - div.clientWidth / 2) + "px";
 		div.style.top = (ev.clientY - div.clientHeight / 1.8) + "px";
 		let moves = availableMoves(ret);
 		console.log(moves);
-		removeHighlights();
+		removeAllHighlights();
 		if (!moves) {
 			console.log("Moves == null");
 		}
@@ -191,15 +194,21 @@ function generateBoard() {
 			}
 			square.oncontextmenu = (event) => {
 				event.preventDefault();
-				if (square.hasChildNodes())
-					square.innerHTML = square.firstChild.innerHTML;
+				if (square.hasChildNodes()) {
+					if (square.firstChild.className.includes("highlighted")) {
+						removeHighlight(square.firstChild);
+					}
+					else {
+						addHighlight(square.id, "selected");
+					}
+				}
 				else {
 					addHighlight(square.id, "selected");
 				}
 			}
-			square.onmousedown = () => {
-				if (!square.hasChildNodes())
-					removeHighlights();
+			square.onmousedown = (ev) => {
+				if (!square.hasChildNodes() && ev.button != 2)
+					removeAllHighlights();
 			}
 			rank.appendChild(square);
 		}
