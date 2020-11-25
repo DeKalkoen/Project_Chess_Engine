@@ -86,6 +86,7 @@ class Chess {
         if (currentType == KING || currentType == ROOK) {
             nextBoard.updateCastlingRights(move);
         }
+        nextBoard.log()
         this.positions.push(nextBoard);
         this.moves.push(move);
     }
