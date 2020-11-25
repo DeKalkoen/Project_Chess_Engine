@@ -16,46 +16,48 @@ class Board {
         this.loadFEN(fen);
     }
     log(){
-        let string;
-        console.log("logging board: \n" )
-        for (let i = BOARD_SIZE - 1; i > 0; i--){
-            console.log(string)
-            string = "";
+        let string = "logging board: \n";
+       
+        for (let i = BOARD_SIZE - 1; i >= 0; i--){
+            
             for(let j = 0; j < BOARD_SIZE; j++){
                 let string2;
                 if (this.empty(j,i)){
-                    string.concat("-")
+                    string = string.concat(" - ")
                 }
                 else{
-                    switch(squares[i][j].type){
+                    switch(this.squares[i][j].type){
                         case KING:
-                            string2 = (squares[i][j].color == WHITE) ? "K" : "k"
-                            string.concat(string2)
+                            string2 = (this.squares[i][j].color == WHITE) ? " K " : " k "
+                            string = string.concat(string2)
+                            
                             break;
                         case QUEEN:
-                            string2 = (squares[i][j].color == WHITE) ? "Q" : "q"
-                            string.concat(string2)
+                            string2 = (this.squares[i][j].color == WHITE) ? " Q " : " q "
+                            string = string.concat(string2)
                             break;
                         case ROOK:
-                            string2 = (squares[i][j].color == WHITE) ? "R" : "r"
-                            string.concat(string2)
+                            string2 = (this.squares[i][j].color == WHITE) ? " R " : " r "
+                            string = string.concat(string2)
                             break;
                         case BISHOP:
-                            string2 = (squares[i][j].color == WHITE) ? "B" : "b"
-                            string.concat(string2)
+                            string2 = (this.squares[i][j].color == WHITE) ? " B " : " b "
+                            string = string.concat(string2)
                             break;
                         case KNIGHT:
-                            string2 = (squares[i][j].color == WHITE) ? "N" : "n"
-                            string.concat(string2)
+                            string2 = (this.squares[i][j].color == WHITE) ? " N " : " n "
+                            string = string.concat(string2)
                             break;
                         case PAWN:
-                            string2 = (squares[i][j].color == WHITE) ? "P" : "p"
-                            string.concat(string2)
+                            string2 = (this.squares[i][j].color == WHITE) ? " P " : " p "
+                            string = string.concat(string2)
                             break;
                     }
                 }
             
             }
+            console.log(string)
+            string = "";
         }
     }
 
