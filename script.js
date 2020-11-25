@@ -95,9 +95,7 @@ function showHighlights(moves) {
 	}
 }
 
-function playMove(move, piece) {
-	console.log(move);
-	removeAllHighlights();
+function movePieceOnBoard(move, piece) {
 	let square = document.getElementById("s" + move.toX + "_" + move.toY);
 	if (square.hasChildNodes()) {
 		if (!move.isCapture) {
@@ -105,7 +103,36 @@ function playMove(move, piece) {
 		}
 		square.firstChild.remove();
 	}
-	document.getElementById("s" + move.toX + "_" + move.toY).appendChild(piece);
+	square.appendChild(piece);
+}
+
+function playMove(move, piece) {
+	console.log(move);
+	removeAllHighlights();
+	movePieceOnBoard(move, piece);
+
+	if (move.isCastle) {
+		let rook = undefined;
+		let rookMove = undefined;
+		if (move.toX == 2 && move.toY == 0) {
+			rook = document.getElementById("s0_0").firstChild;
+			rookMove = new Move(INVALID, INVALID, 3, 0);
+		}
+		else if (move.toX == 6 && move.toY == 0) {
+			rook = document.getElementById("s7_0").firstChild;
+			rookMove = new Move(INVALID, INVALID, 5, 0);
+		}
+		else if (move.toX == 2 && move.toY == 7) {
+			rook = document.getElementById("s0_7").firstChild;
+			rookMove = new Move(INVALID, INVALID, 3, 7);
+		}
+		else if (move.toX == 6 && move.toY == 7) {
+			rook = document.getElementById("s7_7").firstChild;
+			rookMove = new Move(INVALID, INVALID, 5, 7);
+		}
+		movePieceOnBoard(rookMove, rook);
+	}
+
 	chess.makeMoveOnCurrent(move);
 }
 
