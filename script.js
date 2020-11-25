@@ -155,8 +155,17 @@ function addPieceToHTML(piece) {
 		}
 
 		document.onmousemove = (event) => {
-			div.style.left = (event.clientX - div.clientWidth / 2) + "px";
-			div.style.top = (event.clientY - div.clientHeight / 1.8) + "px";
+			let newX = event.clientX;
+			let newY = event.clientY;
+
+			let boardDim = document.getElementById("board").getBoundingClientRect();
+			if (newX < boardDim.x) newX = boardDim.x;
+			if (newX > boardDim.x + boardDim.width) newX = boardDim.x + boardDim.width;
+			if (newY < boardDim.y) newY = boardDim.y;
+			if (newY > boardDim.y + boardDim.height) newY = boardDim.y + boardDim.height;
+
+			div.style.left = (newX - div.clientWidth / 2) + "px";
+			div.style.top = (newY - div.clientHeight / 1.8) + "px";
 		};
 
 		document.onmouseup = (event) => {

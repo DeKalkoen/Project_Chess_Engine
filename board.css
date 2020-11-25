@@ -1,5 +1,7 @@
-body {
+html, body {
     background-color: #312e2b;
+    overflow-y: hidden;
+    height: 100vh;
 }
 
 #board {
