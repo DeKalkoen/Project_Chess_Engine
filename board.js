@@ -89,7 +89,6 @@ class Board {
                 else {
                     this.blackPieces.push(piece);
                 }
-
                 board_j++;
             }
         }

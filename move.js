@@ -3,9 +3,9 @@ class Move {
     fromY = INVALID;
     toX = INVALID;
     toY = INVALID;
-    isCapture = INVALID;
-    isPawnMove = INVALID;
-    isCastle = INVALID;
+    isCapture = false;
+    isPawnMove = false;
+    isCastle = false;
     
     constructor(fromX, fromY, toX, toY){
         this.fromX = fromX
