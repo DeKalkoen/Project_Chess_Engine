@@ -274,62 +274,25 @@ class Pawn extends Piece {
     constructor (type, color, x, y) {
         super(type, color, x, y);
     }
-    
     getLegalMoves(board) {
         if (!(board.getWhoseTurn() == this.color)){
             return null
         }
         let moves = []
-        let pawnToY
-        let pawnJumpY
-        let moveJump = -1;
-        //TODO en passant
-        if (this.color == BLACK){
-            if (this.y > 0){
-                pawnToY = this.y - 1
-            }
-            //first move of black pawn
-            if(this.y == 6){
-                pawnJumpY = this.y - 2
-                moveJump = new Move (this.x,this.y,this.x,pawnJumpY) 
-            }
-            
-        }
-        else if (this.color == WHITE){
-            if (this.y < 7){
-                pawnToY = this.y + 1
-            }
-            //first move of white pawn
-            if(this.y == 1){
-                pawnJumpY = this.y + 2
-                moveJump = new Move (this.x,this.y,this.x,pawnJumpY) 
+        let pawnToY = (this.color == WHITE) ? 1 : -1
+        let startRank = (this.color == WHITE) ? 1 : 6
+        //1 forward
+        for (let i = -1 ; i < 2; i++){
+            let move = new Move(this.x, this.y, this.x + i , this.y + pawnToY)
+            if (board.isLegalPawnMove_setFlags(move, this.color)){
+                moves.push(move)
             }
         }
-        if ((this.color == BLACK && this.y > 0)||(this.color == WHITE && this.y < 7)){
-            if (this.x > 0){
-                if (!board.empty(this.x - 1, pawnToY)){
-                    let move = new Move(this.x, this.y, this.x - 1, pawnToY)
-                    if (board.isLegalMove_specify(move)){
-                        moves.push(move)
-                    }
-                }
-            }
-            if (this.x < 7){
-                if (!board.empty(this.x + 1, pawnToY)){
-                    let move = new Move(this.x, this.y, this.x + 1, pawnToY)
-                    if (board.isLegalMove_specify(move)){
-                        moves.push(move)
-                    }
-                }
-            }
-        }
-        let move = new Move (this.x, this.y, this.x, pawnToY)
-        if (board.isLegalMove_specify(move)){
-            moves.push(move);
-            if (!(moveJump === -1)){
-                if (board.isLegalMove_specify(moveJump)){
-                    moves.push(moveJump)
-                }
+        //2 forward
+        if (board.empty(this.x, this.y + pawnToY) && this.y == startRank){
+            let move = new Move(this.x, this.y, this.x, this.y + (pawnToY * 2))
+            if (board.isLegalPawnMove_setFlags(move, this.color)){
+                moves.push(move)
             }
         }
         return moves

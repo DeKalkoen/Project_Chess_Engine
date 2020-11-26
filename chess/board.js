@@ -21,6 +21,8 @@ class Board {
         console.log("turn: " + this.turn + '\n' + "WhiteCastle(K/Q): " + this.whiteCastleKing + " " + this.whiteCastleQueen)
         console.log("BlackCastle(k/q): " +  this.blackCastleKing + " " + this.blackCastleQueen)
         console.log("halfmoves: " + this.halfmoves + " fullmoves: " + this.fullmoves)
+        console.log(this.whitePieces)
+        console.log(this.blackPieces)
        
         for (let i = BOARD_SIZE - 1; i >= 0; i--){   
             for(let j = 0; j < BOARD_SIZE; j++){
@@ -156,8 +158,7 @@ class Board {
     empty(x,y){
         return (this.squares[y][x] == null)
     }
-    isLegalMove_specify(move){
-        //todo check if king not in check after move
+    moveWithinBoard(move){
         let coords = [move.fromX, move.fromY, move.toX, move.toY]
         for (let i = 0; i < coords.length; i++){
             if (isNaN(coords[i])){                
@@ -168,6 +169,38 @@ class Board {
                 console.log("move is outside of board!")
                 return false
             }
+        }
+        return true
+    }
+    isLegalPawnMove_setFlags(move, color){
+        if (!this.moveWithinBoard(move)){
+            return false
+        }
+        move.isPawnMove = true;
+        //forwards
+        if (move.fromX == move.toX){
+            console.log("kek")
+            if (this.empty(move.toX, move.toY)){
+                move.isCapture = false;
+                return true
+
+            }
+        }
+        else {
+            if (this.empty(move.toX, move.toY)){
+                return false
+            }
+            else if (!(this.squares[move.toY][move.toX].color == color)){
+                move.isCapture = true
+                return true
+                
+            }
+        }
+    }
+    isLegalMove_specify(move){
+        //todo check if king not in check after move
+        if (!this.moveWithinBoard(move)){
+            return false
         }
         let fromType = this.squares[move.fromY][move.fromX].type
         move.isPawnMove = ( fromType == PAWN) ? true : false
@@ -202,6 +235,42 @@ class Board {
             }
         }
         return -1
+    }
+    getPiece(x,y,color){
+        let pieces = (color == WHITE) ? this.whitePieces : this.blackPieces
+        for (let i = 0; i < pieces.length; i++){
+            if (pieces[i].x == x){
+                if (pieces[i].y == y){
+                    return pieces[i]
+                }
+            }
+        }
+        return -1
+    }
+    deletePieceByIndex(index,color){
+        if (color == WHITE){
+            this.squares[this.whitePieces[index].y][this.whitePieces[index].x] = null
+            this.whitePieces.splice(index,1)
+        }
+        else {
+            this.squares[this.blackPieces[index].y][this.blackPieces[index].x] = null
+            this.blackPieces.splice(index,1)
+        }
+    }
+
+    replacePiece(newPiece, oldColor, oldIndex){
+        let oldPiece
+        if (oldColor == WHITE){
+            oldPiece = this.whitePieces[oldIndex]
+            this.whitePieces[oldIndex] = newPiece;
+        }
+        else {
+            oldPiece = this.blackPieces[oldIndex]
+            this.blackPieces[oldIndex] = newPiece
+        }  
+        this.squares[newPiece.y][newPiece.x] = newPiece
+        this.squares[oldPiece.y][oldPiece.x] = null
+        //console.log(oldPiece)
     }
     updateCastlingRights(move){
         //white rook/king moves (or has moved)

@@ -6,8 +6,8 @@ class Chess {
     constructor(fen) {
         let error = undefined;
         if (!fen)
-            error = this.loadFEN(DEFAULT_FEN);
-            //error = this.loadFEN(TEST_FEN)
+            //error = this.loadFEN(DEFAULT_FEN);
+            error = this.loadFEN(TEST_FEN)
         else
             error = this.loadFEN(fen);
 
@@ -29,64 +29,31 @@ class Chess {
 
     makeMoveOnCurrent(move) {
         let nextBoard = this.getCurrentBoard()
-        let currentType = nextBoard.squares[move.fromY][move.fromX].type
         let currentTurn = nextBoard.getWhoseTurn()
+        let currentType = nextBoard.squares[move.fromY][move.fromX].type
         nextBoard.turn = 1 - currentTurn
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : nextBoard.halfmoves + 1
         let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
-        if (pieceIndex < 0) {
-            console.log("Piece with color: " +  currentTurn + " not found in respective pieces array")
-        }
+
         //captured xy first then update the capturing xy
         if(move.isCapture) {
             nextBoard.halfmoves = 0
             let captureIndex = nextBoard.getPieceIndex(move.toX, move.toY, nextBoard.turn)
-            if (currentTurn == BLACK) {
-                nextBoard.whitePieces.splice(captureIndex, 1)
-            }
-            else {
-                nextBoard.blackPieces.splice(captureIndex, 1)
-            }
+            nextBoard.deletePieceByIndex(captureIndex,1 - currentTurn)
         }
         //remove current piece from where it was
         nextBoard.squares[move.fromY][move.fromX] = null;
         if (currentTurn == BLACK) {
             nextBoard.fullmoves++
-            nextBoard.blackPieces[pieceIndex].moveTo(move.toX, move.toY)
-            nextBoard.squares[move.toY][move.toX] = nextBoard.blackPieces[pieceIndex]
-            if (move.isCastle) {
-                if (move.toX == 6) {
-                    let blackRookIndex = nextBoard.getPieceIndex(7, 7, BLACK)
-                    nextBoard.squares[7][7] = null;
-                    nextBoard.blackPieces[blackRookIndex].x = 5
-                    nextBoard.squares[7][5] = nextBoard.blackPieces[blackRookIndex]
-                }
-                else if (move.toX == 2) {
-                    let blackRookIndex = nextBoard.getPieceIndex(0, 7, BLACK)
-                    nextBoard.squares[7][0] = null;
-                    nextBoard.blackPieces[blackRookIndex].x = 3
-                    nextBoard.squares[7][3] = nextBoard.blackPieces[blackRookIndex]
-                }
-            }
         }
-        else {
-            nextBoard.whitePieces[pieceIndex].moveTo(move.toX, move.toY)
-            nextBoard.squares[move.toY][move.toX] = nextBoard.whitePieces[pieceIndex]
-            
-            if (move.isCastle) {
-                if (move.toX == 6) {
-                    let whiteRookIndex = nextBoard.getPieceIndex(7, 0, WHITE)
-                    nextBoard.squares[0][7] = null;
-                    nextBoard.whitePieces[whiteRookIndex].x = 5;
-                    nextBoard.squares[0][5] = nextBoard.whitePieces[whiteRookIndex]
-                }
-                else if (move.toX == 2) {
-                    let whiteRookIndex = nextBoard.getPieceIndex(0, 0, WHITE)
-                    nextBoard.squares[0][0] = null
-                    nextBoard.whitePieces[whiteRookIndex].x = 3;
-                    nextBoard.squares[0][3] = nextBoard.whitePieces[whiteRookIndex]
-                }
-            }
+        //maybe peice not updated in piecearray yet b
+        let currentPiece = nextBoard.getPiece(move.fromX, move.fromY, currentTurn)
+        currentPiece.moveTo(move.toX,move.toY)
+        nextBoard.squares[move.toY][move.toX] = currentPiece
+
+
+        if (move.isCastle) {
+            this.castleRook(nextBoard, move, currentTurn)
         }
         if (currentType == KING || currentType == ROOK) {
             nextBoard.updateCastlingRights(move);
@@ -96,6 +63,16 @@ class Chess {
         this.moves.push(move);
     }
 
+    castleRook(board, move, color){
+        let y_coord = (color == WHITE) ? 0 : 7
+        let x_coord = (move.toX == 6) ? 7 : 0
+        let rookIndex = board.getPieceIndex(x_coord, y_coord, color)
+        let rook = Object.assign(new Rook, board.getPiece(x_coord, y_coord, color))
+        rook.x = (x_coord == 0) ? 3 : 5
+        board.replacePiece(rook, color, rookIndex)
+    }
+
+    
     getLegalMoves() {
         let legalMoves= []
         let current = this.getCurrentBoard()
