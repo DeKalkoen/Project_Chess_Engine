@@ -21,8 +21,12 @@ class Board {
         console.log("turn: " + this.turn + '\n' + "WhiteCastle(K/Q): " + this.whiteCastleKing + " " + this.whiteCastleQueen)
         console.log("BlackCastle(k/q): " +  this.blackCastleKing + " " + this.blackCastleQueen)
         console.log("halfmoves: " + this.halfmoves + " fullmoves: " + this.fullmoves)
-        console.log(this.whitePieces)
-        console.log(this.blackPieces)
+        if (this.validatePieceArrays()){
+            console.log("PieceArrays is in Sync with Board")
+        }
+        else{
+            console.log ("BOARD & PIECEARRAYS ARE OUT OF SYNC! SEE ERROR ABOVE ^^^")
+        }
        
         for (let i = BOARD_SIZE - 1; i >= 0; i--){   
             for(let j = 0; j < BOARD_SIZE; j++){
@@ -56,6 +60,36 @@ class Board {
             console.log(string)
             string = "";
         }
+    }
+    validatePieceArrays(){
+        let noError = true;
+        for (let i = 0; i < this.whitePieces.length; i++){
+            if (this.empty(this.whitePieces[i].x, this.whitePieces[i].y)){
+                console.log("NO MATCH, EMPTY ON BOARD")
+                noError = false;
+            }
+            else if (this.squares[this.whitePieces[i].y][this.whitePieces[i].x] === this.whitePieces[i]){
+                continue
+            }
+            else {
+                console.log("NO MATCH, OTHER PIECE ON BOARD")
+                noError = false;
+            }
+        }
+        for (let i = 0; i < this.blackPieces.length; i++){
+            if (this.empty(this.blackPieces[i].x, this.blackPieces[i].y)){
+                console.log("NO MATCH, EMPTY ON BOARD")
+                noError = false;
+            }
+            else if (this.squares[this.blackPieces[i].y][this.blackPieces[i].x] === this.blackPieces[i]){
+                continue
+            }
+            else {
+                console.log("NO MATCH, OTHER PIECE ON BOARD")
+                noError = false;
+            }
+        }
+        return noError
     }
 
     loadFEN(fen) {
