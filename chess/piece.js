@@ -160,16 +160,8 @@ class King extends Piece {
             return null
         }
         let moves = []
-        let castleKing
-        let castleQueen
-        if (this.color == WHITE) {
-            castleKing = board.whiteCastleKing
-            castleQueen = board.whiteCastleQueen
-        }
-        else {
-            castleKing = board.blackCastleKing
-            castleQueen = board.blackCastleQueen
-        }
+        let castleKing = (this.color == WHITE) ? board.whiteCastleKing : board.blackCastleKing
+        let castleQueen = (this.color == WHITE) ? board.whiteCastleQueen : board.blackCastleQueen
         //castling
         //todo, king may not be in check + castling squares may not be attacked! (rook may be attacked np)
         if (castleKing) {
@@ -192,11 +184,9 @@ class King extends Piece {
         let x_pos = (this.x > 0) ? this.x - 1 : this.x
         let y_lim = ((this.y - 2) < -1) ? -1 : this.y - 2
         let x_lim = ((this.x + 2) > 8) ? 8 : this.x + 2 
-        //console.log("y_pos: " + y_pos + " x_pos " + x_pos + " y_lim: " + y_lim + " x_lim: " + x_lim)
         for(let i = y_pos; i > y_lim; i--){
             for (let j = x_pos; j < x_lim; j++){
                 let kingMove = new Move(this.x, this.y, j, i)
-                //console.log("kingMove.fromX: " + kingMove.fromX + " kingMove.fromY: " + kingMove.fromY + " kingMove.toX: " + kingMove.toX + " kingMove.toY: " + kingMove.toY)
                 if (board.isLegalMove_specify(kingMove)){
                     moves.push(kingMove)
                 }

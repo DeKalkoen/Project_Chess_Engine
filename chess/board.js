@@ -177,9 +177,7 @@ class Board {
             return false
         }
         move.isPawnMove = true;
-        //forwards
         if (move.fromX == move.toX){
-            console.log("kek")
             if (this.empty(move.toX, move.toY)){
                 move.isCapture = false;
                 return true
@@ -203,13 +201,10 @@ class Board {
             return false
         }
         let fromType = this.squares[move.fromY][move.fromX].type
-        move.isPawnMove = ( fromType == PAWN) ? true : false
         
         if (fromType == KING){
-            //-2 % 2 == -0 == 0 == 2 % 2
-            move.isCastle = ((move.fromX - move.toX) % 2 == 0) ? true : false 
+            move.isCastle = (move.toY == move.fromY) && ((move.fromX - move.toX) % 2 == 0) ? true : false 
         } 
-        //todo en passant captures in front
         if (this.empty(move.toX, move.toY)){
             move.isCapture = false
             return true;
