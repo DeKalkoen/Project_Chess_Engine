@@ -33,29 +33,27 @@ class Chess {
         let currentType = nextBoard.squares[move.fromY][move.fromX].type
         nextBoard.turn = 1 - currentTurn
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : nextBoard.halfmoves + 1
-        let pieceIndex = nextBoard.getPieceIndex(move.fromX, move.fromY, currentTurn)
 
-        //captured xy first then update the capturing xy
+        let captureType;
         if(move.isCapture) {
             nextBoard.halfmoves = 0
             let captureIndex = nextBoard.getPieceIndex(move.toX, move.toY, nextBoard.turn)
+            captureType = nextBoard.squares[move.toY][move.toX].type
             nextBoard.deletePieceByIndex(captureIndex,1 - currentTurn)
         }
-        //remove current piece from where it was
+
         nextBoard.squares[move.fromY][move.fromX] = null;
         if (currentTurn == BLACK) {
             nextBoard.fullmoves++
         }
-        //maybe peice not updated in piecearray yet b
         let currentPiece = nextBoard.getPiece(move.fromX, move.fromY, currentTurn)
         currentPiece.moveTo(move.toX,move.toY)
         nextBoard.squares[move.toY][move.toX] = currentPiece
 
-
         if (move.isCastle) {
             this.castleRook(nextBoard, move, currentTurn)
         }
-        if (currentType == KING || currentType == ROOK) {
+        if (currentType == KING || currentType == ROOK || captureType == ROOK) {
             nextBoard.updateCastlingRights(move);
         }
         nextBoard.log()

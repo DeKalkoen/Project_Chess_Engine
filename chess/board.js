@@ -328,6 +328,23 @@ class Board {
                 this.blackCastleKing = false
             }
         }
+        //rooks captured
+        if(move.toY == 0){
+            if(move.toX == 0){
+                this.whiteCastleQueen = false
+            }
+            else if (move.toX == 7){
+                this.whiteCastleKing = false
+            }
+        }
+        else if (move.toY == 7){
+            if(move.toX == 0){
+                this.blackCastleQueen = false
+            }
+            else if (move.toX == 7){
+                this.blackCastleKing = false
+            }
+        }
     }
     
 
