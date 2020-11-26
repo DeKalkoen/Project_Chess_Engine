@@ -56,9 +56,50 @@ class Chess {
         if (currentType == KING || currentType == ROOK || captureType == ROOK) {
             nextBoard.updateCastlingRights(move);
         }
+        console.log("Move played: " + this.getMoveNotation(move, currentType))
         nextBoard.log()
+        
         this.positions.push(nextBoard);
         this.moves.push(move);
+    }
+    getMoveNotation(move, pieceType){
+        if (move.isCastle){
+            return (move.toX == 6) ? "O-O" : "O-O-O"
+        }
+        let string = ""
+        switch (pieceType){
+            case KING:
+                string += "k"
+                break;
+            case QUEEN:
+                string += "q"
+                break;
+            case ROOK:
+                string += "r"
+                break;
+            case BISHOP:
+                string += "b"
+                break;
+            case KNIGHT:
+                string += "n"
+                break;
+            case PAWN:
+                if (move.isCapture){
+                    string += this.convertCoordinates(move.fromX,move.fromY)[0]
+                }
+                break;
+        }
+        if (move.isCapture){
+            string += "x"
+        }
+        string += this.convertCoordinates(move.toX, move.toY)
+        return string
+    }
+    convertCoordinates(x,y){
+        return String.fromCharCode(x + 97) + String.fromCharCode(y + 49);
+    }
+    revertCoordinats(char,num){
+        return [char.charCodeAt(0) - 97, num.charCodeAt(0) - 49] 
     }
 
     castleRook(board, move, color){

@@ -182,12 +182,6 @@ class Board {
     getWhoseTurn() {
         return this.turn % 2;
     }
-    convertCoordinates(x,y){
-        return String.fromCharCode(x + 97) + String.fromCharCode(y + 49);
-    }
-    revertCoordinats(char,num){
-        return [char.charCodeAt(0) - 97, num.charCodeAt(0) - 49] 
-    }
 
     empty(x,y){
         return (this.squares[y][x] == null)
