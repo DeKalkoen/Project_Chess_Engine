@@ -41,17 +41,41 @@ class Chess {
             captureType = nextBoard.squares[move.toY][move.toX].type
             nextBoard.deletePieceByIndex(captureIndex,1 - currentTurn)
         }
-
-        nextBoard.squares[move.fromY][move.fromX] = null;
         if (currentTurn == BLACK) {
             nextBoard.fullmoves++
         }
+        nextBoard.squares[move.fromY][move.fromX] = null;
         let currentPiece = nextBoard.getPiece(move.fromX, move.fromY, currentTurn)
-        currentPiece.moveTo(move.toX,move.toY)
+        currentPiece.moveTo(move.toX ,move.toY)
         nextBoard.squares[move.toY][move.toX] = currentPiece
 
         if (move.isCastle) {
             this.castleRook(nextBoard, move, currentTurn)
+        }
+        if (move.isPromote){
+            let response = QUEEN;
+            let promotedPiece
+            //promt user here 
+            // response = (getPromotionChoice() > 0) ? getPromotionChoice() : QUEEN
+            switch (response){
+                case QUEEN:
+                    promotedPiece = new Queen(QUEEN, currentTurn, move.toX, move.toY)
+                    break;
+                case ROOK:
+                    promotedPiece = new Rook(ROOK, currentTurn, move.toX, move.toY)
+                    break;
+                case BISHOP:
+                    promotedPiece = new Bishop(BISHOP,currentTurn, move.toX, move.toY)
+                    break;
+                case KNIGHT:
+                    promotedPiece = new Knight(KNIGHT,currentTurn, move.toX, move.toY)
+                    break;
+
+            }
+
+            let pawnIndex = nextBoard.getPieceIndex(move.toX, move.toY, currentTurn)
+            nextBoard.replacePiece(promotedPiece, currentTurn, pawnIndex)
+            currentType = nextBoard.squares[move.toY][move.toX].type
         }
         if (currentType == KING || currentType == ROOK || captureType == ROOK) {
             nextBoard.updateCastlingRights(move);
@@ -67,6 +91,7 @@ class Chess {
             return (move.toX == 6) ? "O-O" : "O-O-O"
         }
         let string = ""
+        let queening = ""
         switch (pieceType){
             case KING:
                 string += "k"
@@ -89,10 +114,16 @@ class Chess {
                 }
                 break;
         }
+        if(move.isPromote){
+            queening = " = " + string.toUpperCase();
+         }
+        
         if (move.isCapture){
             string += "x"
         }
-        string += this.convertCoordinates(move.toX, move.toY)
+
+        
+        string += this.convertCoordinates(move.toX, move.toY) + queening
         return string
     }
     convertCoordinates(x,y){

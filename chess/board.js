@@ -205,6 +205,8 @@ class Board {
             return false
         }
         move.isPawnMove = true;
+        let promotionRank = (color == WHITE) ? 7 : 0
+        move.isPromote = (move.toY == promotionRank) ? true : false
         if (move.fromX == move.toX){
             if (this.empty(move.toX, move.toY)){
                 move.isCapture = false;
@@ -286,13 +288,15 @@ class Board {
         if (oldColor == WHITE){
             oldPiece = this.whitePieces[oldIndex]
             this.whitePieces[oldIndex] = newPiece;
+            console.log(this.whitePieces[oldIndex])
         }
         else {
             oldPiece = this.blackPieces[oldIndex]
             this.blackPieces[oldIndex] = newPiece
         }  
-        this.squares[newPiece.y][newPiece.x] = newPiece
         this.squares[oldPiece.y][oldPiece.x] = null
+        this.squares[newPiece.y][newPiece.x] = newPiece
+        
         //console.log(oldPiece)
     }
     updateCastlingRights(move){

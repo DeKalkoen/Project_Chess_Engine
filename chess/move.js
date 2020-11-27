@@ -6,6 +6,7 @@ class Move {
     isCapture = false;
     isPawnMove = false;
     isCastle = false;
+    isPromote = false;
     
     constructor(fromX, fromY, toX, toY){
         this.fromX = fromX
