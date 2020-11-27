@@ -11,6 +11,7 @@ class Board {
     enPassant = "";
     halfmoves = 0;
     fullmoves = 0;
+    isCheck = null;
 
     constructor(fen) {
         this.loadFEN(fen);
@@ -200,11 +201,12 @@ class Board {
         }
         return true
     }
-    isLegalPawnMove_setFlags(move, color){
+    isLegalPawnMove_setFlags(move){
         if (!this.moveWithinBoard(move)){
             return false
         }
         move.isPawnMove = true;
+        let color = this.squares[move.fromY][move.fromX].color
         let promotionRank = (color == WHITE) ? 7 : 0
         move.isPromote = (move.toY == promotionRank) ? true : false
         if (move.fromX == move.toX){
@@ -221,8 +223,8 @@ class Board {
             else if (!(this.squares[move.toY][move.toX].color == color)){
                 move.isCapture = true
                 return true
-                
             }
+            return false
         }
     }
     isLegalMove_specify(move){
@@ -248,7 +250,20 @@ class Board {
             move.isCapture = false;
             return false;
         }
+        
     }
+    isSquareAttackedBy(x,y,color){
+        let moves = getLegalMovesOf(color)
+        for (let i = 0; i < moves.length; i++){
+            if (moves[i].toX == x){
+                if (moves[i].toY == y){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     getPieceIndex(x,y,color){
         //slow -> pieces copies array(?)
         let pieces = (color == WHITE) ? this.whitePieces : this.blackPieces
@@ -346,10 +361,13 @@ class Board {
     }
     
 
-    getWhiteLegalMoves() {
-        
-    }
-    getBlackLegalMoves(){
+    getLegalMovesOf(color){
+        let moves = []
+        let pieces = (color == WHITE) ? this.whitePieces : this.blackPieces
+        for (let i = 0; i < pieces.length; i++){
+            moves.concat(pieces[i].getLegalMoves(this))
+        }
+        return moves
     }
         
 }

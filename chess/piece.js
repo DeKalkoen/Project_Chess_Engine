@@ -274,14 +274,14 @@ class Pawn extends Piece {
         //1 forward
         for (let i = -1 ; i < 2; i++){
             let move = new Move(this.x, this.y, this.x + i , this.y + pawnToY)
-            if (board.isLegalPawnMove_setFlags(move, this.color)){
+            if (board.isLegalPawnMove_setFlags(move)){
                 moves.push(move)
             }
         }
         //2 forward
         if (board.empty(this.x, this.y + pawnToY) && this.y == startRank){
             let move = new Move(this.x, this.y, this.x, this.y + (pawnToY * 2))
-            if (board.isLegalPawnMove_setFlags(move, this.color)){
+            if (board.isLegalPawnMove_setFlags(move)){
                 moves.push(move)
             }
         }
