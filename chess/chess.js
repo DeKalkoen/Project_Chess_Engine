@@ -27,27 +27,28 @@ class Chess {
         return this.positions[this.positions.length - 1];
     }
 
-    makeMoveOnCurrent(move) {
-        let nextBoard = this.getCurrentBoard()
+    makeMoveOnBoard(board, move, actualMove) {
+        let nextBoard = board
         let currentTurn = nextBoard.getWhoseTurn()
         let currentType = nextBoard.squares[move.fromY][move.fromX].type
-        nextBoard.turn = 1 - currentTurn
+       
         nextBoard.halfmoves = (move.isPawnMove) ? 0 : nextBoard.halfmoves + 1
 
         let captureType;
         if(move.isCapture) {
             nextBoard.halfmoves = 0
-            let captureIndex = nextBoard.getPieceIndex(move.toX, move.toY, nextBoard.turn)
+            let captureIndex = nextBoard.getPieceIndex(move.toX, move.toY, 1 - currentTurn)
             captureType = nextBoard.squares[move.toY][move.toX].type
             nextBoard.deletePieceByIndex(captureIndex,1 - currentTurn)
         }
         if (currentTurn == BLACK) {
             nextBoard.fullmoves++
         }
-        nextBoard.squares[move.fromY][move.fromX] = null;
+        
         let currentPiece = nextBoard.getPiece(move.fromX, move.fromY, currentTurn)
         currentPiece.moveTo(move.toX ,move.toY)
         nextBoard.squares[move.toY][move.toX] = currentPiece
+        nextBoard.squares[move.fromY][move.fromX] = null;
 
         if (move.isCastle) {
             this.castleRook(nextBoard, move, currentTurn)
@@ -72,18 +73,64 @@ class Chess {
                     break;
 
             }
-
             let pawnIndex = nextBoard.getPieceIndex(move.toX, move.toY, currentTurn)
             nextBoard.replacePiece(promotedPiece, currentTurn, pawnIndex)
             currentType = nextBoard.squares[move.toY][move.toX].type
         }
+        //update kingpositions
+        if (currentType == KING){
+            if (currentTurn == WHITE){
+                nextBoard.whiteKingPosition = [move.toX, move.toY]
+            }
+            else {
+                nextBoard.blackKingPosition = [move.toX, move.toY]
+            }
+        }
+        if (nextBoard.isInCheck(1 - currentTurn) && actualMove){
+            move.isCheck = true;
+            nextBoard.inCheck = 1 - currentTurn;
+            //FIX
+            nextBoard.turn = 1 - nextBoard.turn;
+            let possibleMoves = nextBoard.getLegalMovesOf(currentTurn - 1)
+            let boards = []
+            for (let i = 0; i < possibleMoves.length; i++){
+                let currentBoard = _.cloneDeep(nextBoard)
+                let board = this.makeMoveOnBoard(currentBoard, possibleMoves[i], false)
+                boards = boards.concat(board)
+            }
+            let checkMate = true;
+            for (let i = 0; i < boards.length; i++){
+                if (!boards[i].isInCheck(1-currentTurn)){
+                    checkMate = false;
+                }
+            }
+            if (checkMate){
+                console.log("THATS CHECKMATE MOTHERFUCKER")
+            }
+            nextBoard.turn = 1 - nextBoard.turn;
+            
+        }
+        else {
+            nextBoard.inCheck = null
+        }
         if (currentType == KING || currentType == ROOK || captureType == ROOK) {
             nextBoard.updateCastlingRights(move);
         }
-        console.log("Move played: " + this.getMoveNotation(move, currentType))
-        nextBoard.log()
+        nextBoard.turn = 1 - currentTurn
+        if (actualMove){
+            this.updateTurn(nextBoard,move,currentType)
+            return
+        }
+        else {
+            return nextBoard
+        }
         
-        this.positions.push(nextBoard);
+    }
+
+    updateTurn(board,move,type){
+        console.log("Move played: " + this.getMoveNotation(move, type))
+        board.log()
+        this.positions.push(board);
         this.moves.push(move);
     }
     getMoveNotation(move, pieceType){
@@ -124,6 +171,9 @@ class Chess {
 
         
         string += this.convertCoordinates(move.toX, move.toY) + queening
+        if (move.isCheck){
+            string += "+"
+        }
         return string
     }
     convertCoordinates(x,y){

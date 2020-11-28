@@ -11,10 +11,14 @@ class Board {
     enPassant = "";
     halfmoves = 0;
     fullmoves = 0;
-    isCheck = null;
+    inCheck = null;
+    whiteKingPosition = [-1,-1] // x y
+    blackKingPosition = [-1,-1]
 
     constructor(fen) {
-        this.loadFEN(fen);
+        if (fen != null){
+            this.loadFEN(fen);
+        } 
     }
     //debugging
     log(){
@@ -22,6 +26,8 @@ class Board {
         console.log("turn: " + this.turn + '\n' + "WhiteCastle(K/Q): " + this.whiteCastleKing + " " + this.whiteCastleQueen)
         console.log("BlackCastle(k/q): " +  this.blackCastleKing + " " + this.blackCastleQueen)
         console.log("halfmoves: " + this.halfmoves + " fullmoves: " + this.fullmoves)
+        console.log("White king position: " + this.whiteKingPosition + " Black:" + this.blackKingPosition)
+        console.log("Currently in check: " + this.inCheck)
         if (this.validatePieceArrays()){
             console.log("PieceArrays is in Sync with Board")
         }
@@ -141,6 +147,12 @@ class Board {
                 let piece = null;
                 if (character === 'k') {
                     piece = new King(KING, color, board_j, 7 - i);
+                    if (color == WHITE){
+                        this.whiteKingPosition = [board_j, 7 - i]
+                    }
+                    else if (color == BLACK){
+                        this.blackKingPosition = [board_j, 7 - i]
+                    }
                 }
                 else if (character === 'q') {
                     piece = new Queen(QUEEN, color, board_j, 7 - i);
@@ -171,15 +183,6 @@ class Board {
         }
     }
 
-    loadBoard(board, move) {
-        this.turn = 1 - board.turn;
-        // TODO: Copy board and execute move;
-    }
-
-    at(file, rank) {
-        return squares[rank - 1][file]
-    }
-
     getWhoseTurn() {
         return this.turn % 2;
     }
@@ -195,7 +198,7 @@ class Board {
                 return false   
             }
             if (coords[i] > 7 || coords[i] < 0){
-                console.log("move is outside of board!")
+                //console.log("move is outside of board!")
                 return false
             }
         }
@@ -253,7 +256,7 @@ class Board {
         
     }
     isSquareAttackedBy(x,y,color){
-        let moves = getLegalMovesOf(color)
+        let moves = this.getLegalMovesOf(color)
         for (let i = 0; i < moves.length; i++){
             if (moves[i].toX == x){
                 if (moves[i].toY == y){
@@ -262,6 +265,10 @@ class Board {
             }
         }
         return false;
+    }
+    isInCheck(kingColor){
+        let coords = (kingColor == WHITE) ? this.whiteKingPosition : this.blackKingPosition
+        return (this.isSquareAttackedBy(coords[0], coords[1], 1 - kingColor))
     }
     
     getPieceIndex(x,y,color){
@@ -365,7 +372,7 @@ class Board {
         let moves = []
         let pieces = (color == WHITE) ? this.whitePieces : this.blackPieces
         for (let i = 0; i < pieces.length; i++){
-            moves.concat(pieces[i].getLegalMoves(this))
+            moves = moves.concat(pieces[i].getLegalMoves(this))
         }
         return moves
     }

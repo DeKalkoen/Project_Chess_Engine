@@ -59,6 +59,6 @@ function playMove(move, piece) {
 		}
 		movePieceOnBoard(rookMove, rook);
 	}
-
-	chess.makeMoveOnCurrent(move);
+	let board = chess.getCurrentBoard()
+	chess.makeMoveOnBoard(board, move, true);
 }
